@@ -53,6 +53,9 @@ const CONFIG = {
   showUber: true,                    // 메뉴의 [Uber 택시] 버튼. false 로 바꾸면 사라집니다
   stayLatitude: 37.563988,           // 숙소 위도(지도 좌표). Uber 도착지로 씁니다
   stayLongitude: 127.005234,         // 숙소 경도(지도 좌표). Uber 도착지로 씁니다
+  // ----- 지도 (주변 맛집, 둘러보기 화면) -----
+  naverMapKey: "e6zdxgxjk4",         // 네이버 지도 인증 키 (Client ID). at more hd와 같은 키입니다. 인증에 실패하면 OpenStreetMap 지도가 대신 나옵니다
+  mapZoom: 16,                       // [숙소로] 버튼을 눌렀을 때 확대 정도. 숫자가 클수록 가까이 보입니다 (14~18)
 
   checkinTime: "오후 4시",            // 체크인 시각. 이 값을 바꾸면 체크인 화면에 반영됩니다
   checkoutTime: "오전 11시",          // 체크아웃 시각. 이 값을 바꾸면 체크인 화면에 반영됩니다
@@ -398,6 +401,9 @@ const CONFIG = {
     },
     {
       "id": "food",
+      "map": true,
+      "mapChips": true,
+      "mapStyles": [{"icon": "food", "color": "#A8643E"}, {"icon": "food", "color": "#8C6B4E"}, {"icon": "cafe", "color": "#6B7F6A"}],
       "menu": "주변 맛집",
       "desc": "맛집 9곳, 빵집과 카페 3곳",
       "title": "주변 맛집",
@@ -406,6 +412,7 @@ const CONFIG = {
         {
           "group": "처음 오신 분께 추천",
           "title": "하남돼지집 동대문점",
+          "place": {"lat": 37.5667657, "lng": 127.006847, "naver": "하남돼지집 동대문점", "gid": "ChIJH_cCApGjfDURk6NXCmE5vb4"},
           "text": [
             "한국식 고기구이를 처음 드신다면 이곳부터."
           ],
@@ -424,6 +431,7 @@ const CONFIG = {
         },
         {
           "title": "북창동순두부 동대문점",
+          "place": {"lat": 37.5677818, "lng": 127.0080418, "naver": "북창동순두부 동대문점", "gid": "ChIJE4G1rSejfDURVSH03T3dKac"},
           "text": [
             "따뜻한 찌개와 반찬. 혼자 여행할 때도 편합니다."
           ],
@@ -442,6 +450,7 @@ const CONFIG = {
         },
         {
           "title": "열혈청춘 동대문점",
+          "place": {"lat": 37.5667022, "lng": 127.0066053, "naver": "열혈청춘 동대문점", "gid": "ChIJASx82PqjfDURgL_e8xBV_pw"},
           "text": [
             "일행과 함께 나눠 먹는 갈비찜."
           ],
@@ -460,6 +469,7 @@ const CONFIG = {
         },
         {
           "title": "진옥화할매원조닭한마리",
+          "place": {"lat": 37.5703627, "lng": 127.0057612, "naver": "진옥화할매원조닭한마리", "gid": "ChIJ_TLjgiSjfDURnctlL07vfJo"},
           "text": [
             "동대문을 대표하는 닭 한 마리 전골."
           ],
@@ -479,6 +489,7 @@ const CONFIG = {
         {
           "group": "동네 사람들이 가는 곳",
           "title": "뚝배기집",
+          "place": {"naver": "뚝배기집 동대문"},
           "text": [
             "한국 가정식 한 상."
           ],
@@ -497,6 +508,7 @@ const CONFIG = {
         },
         {
           "title": "남대문손칼국수",
+          "place": {"lat": 37.5649378, "lng": 127.0014428, "naver": "남대문손칼국수 오장동", "gid": "ChIJmdgrFhmjfDUR9NmzSJ3wkSY"},
           "text": [
             "소박한 동네 국숫집."
           ],
@@ -515,6 +527,7 @@ const CONFIG = {
         },
         {
           "title": "스웨덴곰탕",
+          "place": {"lat": 37.5629639, "lng": 126.9978029, "naver": "스웨덴곰탕", "gid": "ChIJJW2fGeajfDURKoaFAo8uGoM"},
           "text": [
             "맵지 않은 따뜻한 국물."
           ],
@@ -533,6 +546,7 @@ const CONFIG = {
         },
         {
           "title": "장충칼국수전문점",
+          "place": {"lat": 37.5625344, "lng": 127.0042112, "naver": "장충칼국수 쌍림동", "gid": "ChIJWT-LbBmjfDUROAVIluhqPY4"},
           "text": [
             "한국 사람들의 평범한 점심."
           ],
@@ -551,6 +565,7 @@ const CONFIG = {
         },
         {
           "title": "평양면옥 장충본점",
+          "place": {"lat": 37.5632224, "lng": 127.0065977, "naver": "평양면옥 장충본점", "gid": "ChIJy16eNRijfDURG8ccxFM6frs"},
           "text": [
             "담백한 평양냉면의 오래된 집."
           ],
@@ -570,6 +585,7 @@ const CONFIG = {
         {
           "group": "빵집과 카페",
           "title": "버터힐 키친",
+          "place": {"lat": 37.5624139, "lng": 127.005274, "naver": "버터힐 장충동", "gid": "ChIJ2WU8oBmjfDURjrndggHAn4g"},
           "text": [
             "작은 골목 빵집. 소금빵은 일찍 떨어질 수 있습니다."
           ],
@@ -588,6 +604,7 @@ const CONFIG = {
         },
         {
           "title": "프릳츠 장충점",
+          "place": {"lat": 37.5597249, "lng": 127.0052235, "naver": "프릳츠 장충점", "gid": "ChIJ2YkcDgCjfDURo6-Fr23BsA0"},
           "text": [
             "한옥 분위기의 정원이 있는 카페."
           ],
@@ -606,6 +623,7 @@ const CONFIG = {
         },
         {
           "title": "태극당",
+          "place": {"lat": 37.5595093, "lng": 127.0050347, "naver": "태극당 장충동", "gid": "ChIJWYGZshujfDURiHtQ8Wk_QJ0"},
           "text": [
             "1946년부터 이어진 빵집."
           ],
@@ -626,6 +644,8 @@ const CONFIG = {
     },
     {
       "id": "nearby",
+      "map": true,
+      "mapStyles": [{"icon": "nearby", "color": "#5C6B78"}],
       "menu": "둘러보기",
       "desc": "DDP, 광장시장, 남산",
       "title": "둘러보기",
@@ -633,6 +653,7 @@ const CONFIG = {
       "sections": [
         {
           "title": "동대문디자인플라자 (DDP)",
+          "place": {"lat": 37.5665256, "lng": 127.0092236, "naver": "동대문디자인플라자", "gid": "ChIJ8xRYr29FezUR3AtFqx2pIlw"},
           "text": [
             "자하 하디드가 설계한 곡선의 건축. 한양도성 성곽과 동대문역사문화공원이 함께 있습니다. 밤 산책도 좋습니다."
           ],
@@ -655,6 +676,7 @@ const CONFIG = {
         },
         {
           "title": "장충동 족발골목",
+          "place": {"lat": 37.5602799, "lng": 127.0061465, "naver": "장충동 족발골목", "gid": "ChIJoe-qd1GjfDUR9k4tgmUvWSA"},
           "text": [
             "1960년대부터 이어진 족발 골목. 동대입구역 3번 출구 앞에 가게들이 모여 있습니다."
           ],
@@ -673,6 +695,7 @@ const CONFIG = {
         },
         {
           "title": "동대문 패션타운",
+          "place": {"lat": 37.5675841, "lng": 127.0122873, "naver": "동대문 패션타운 관광특구", "gid": "ChIJsRuJny2jfDURWRedpx0jlY8"},
           "text": [
             "쇼핑몰과 패션 상점이 모인 쇼핑 거리."
           ],
@@ -685,6 +708,7 @@ const CONFIG = {
         },
         {
           "title": "동대문종합시장",
+          "place": {"lat": 37.5707806, "lng": 127.0081119, "naver": "동대문종합시장", "gid": "ChIJ48Kc0iKjfDURZg77ruL0bQM"},
           "text": [
             "원단, 액세서리 부자재, 한복과 침구까지 모인 시장."
           ],
@@ -707,6 +731,7 @@ const CONFIG = {
         },
         {
           "title": "광장시장",
+          "place": {"lat": 37.5700385, "lng": 126.9996038, "naver": "광장시장", "gid": "ChIJm3V0fu2ifDURRJ8IMUijVtY"},
           "text": [
             "1905년에 문을 연 서울의 첫 상설시장. 빈대떡, 육회, 꼬마김밥이 유명합니다."
           ],
@@ -733,6 +758,7 @@ const CONFIG = {
         },
         {
           "title": "남산과 N서울타워",
+          "place": {"lat": 37.5511694, "lng": 126.9882266, "naver": "N서울타워", "gid": "ChIJqWqOqFeifDURpYJ5LnxX-Fw"},
           "text": [
             "서울이 내려다보이는 남산 위 전망대. 해 질 무렵이 특히 좋습니다. 버스나 택시를 권합니다."
           ],
@@ -4615,6 +4641,73 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   transition: opacity 0.2s, transform 0.2s; z-index: 60;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* 지도 (주변 맛집, 둘러보기) */
+.map-wrap {
+  position: relative; height: 340px; margin: 0 0 16px;
+  border-radius: var(--card); overflow: hidden;
+  border: 1px solid var(--line); background: var(--soft);
+}
+.map-wrap.off { display: none; }
+.map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-recenter {
+  position: absolute; right: 12px; bottom: 28px; z-index: 500;
+  min-height: 44px; padding: 0 18px; border-radius: 22px;
+  border: none; background: var(--bg); color: var(--text);
+  font-size: 16px; font-weight: 700; font-family: inherit;
+  box-shadow: 0 2px 10px rgba(31, 34, 32, 0.18); cursor: pointer;
+}
+.map .leaflet-tile-pane { filter: saturate(0.8) sepia(0.06); }
+.leaflet-tooltip.stay-label {
+  background: var(--dark); color: #F6F2EA; border: none; border-radius: 16px;
+  padding: 5px 12px; font-size: 14px; font-weight: 700; font-family: inherit;
+  box-shadow: 0 2px 6px rgba(31, 34, 32, 0.3); white-space: nowrap;
+}
+.leaflet-tooltip.stay-label::before { display: none; }
+.pin {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2px solid #FFFDF9; color: #FFFDF9;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(31, 34, 32, 0.35);
+}
+.pin svg { width: 18px; height: 18px; }
+.pin.stay { width: 44px; height: 44px; border-width: 3px; }
+.pin.stay svg { width: 22px; height: 22px; }
+.leaflet-popup-content { margin: 12px 14px; font-family: inherit; font-size: 16px; line-height: 1.45; }
+.leaflet-popup-content b, .nv-pop b { display: block; font-size: 16px; color: var(--text); }
+.leaflet-popup-content span, .nv-pop span { display: block; color: var(--sub); font-size: 14px; }
+.pop-more {
+  margin-top: 8px; min-height: 40px; padding: 0 14px; width: 100%;
+  border: none; border-radius: var(--btn); background: var(--dark); color: #F6F2EA;
+  font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
+}
+.nv-pin { position: relative; }
+.nv-label {
+  position: absolute; bottom: 100%; left: 50%; transform: translate(-50%, -6px);
+  background: var(--dark); color: #F6F2EA; border-radius: 16px;
+  padding: 5px 12px; font-size: 14px; font-weight: 700; white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(31, 34, 32, 0.3);
+}
+.nv-pop {
+  min-width: 200px; max-width: 260px; padding: 12px 14px;
+  background: var(--bg); border-radius: var(--card);
+  box-shadow: 0 6px 20px rgba(31, 34, 32, 0.22);
+  font-size: 16px; line-height: 1.45; transform: translateY(-34px);
+}
+.chips {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 0 0 16px;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: 0 0 auto; min-height: 48px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 24px;
+  background: var(--bg); color: var(--text);
+  font-size: 16px; font-family: inherit; white-space: nowrap; cursor: pointer;
+}
+.chip.on { border-color: var(--accent); background: var(--accent); color: #FFFFFF; font-weight: 600; }
+.card.flash { box-shadow: 0 0 0 3px var(--accent); }
+.hide { display: none !important; }
 </style>
 </head>
 <body>
@@ -4631,7 +4724,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
 
   /* 화면 안의 작은 글자 중 CONFIG에 없는 것 (언어별) */
   var EXTRA = {
-    "ko": { installLink: "홈 화면에 저장하는 법", tabHome: "홈", installText: "이 안내를 휴대폰 홈 화면에 저장해 두세요", installBtn: "저장하기", installTitle: "홈 화면에 저장하기",
+    "ko": { mapRecenter: "숙소로", mapMore: "자세히 보기", mapAll: "전체", installLink: "홈 화면에 저장하는 법", tabHome: "홈", installText: "이 안내를 휴대폰 홈 화면에 저장해 두세요", installBtn: "저장하기", installTitle: "홈 화면에 저장하기",
       iosSteps: ["Safari 아래쪽의 공유 버튼(네모 위 화살표)을 누릅니다.", "목록을 내려 [홈 화면에 추가]를 누릅니다.", "오른쪽 위 [추가]를 누르면 끝입니다."],
       iosOther: "주소창 옆 공유 버튼(네모 위 화살표)을 누른 뒤 [홈 화면에 추가]를 눌러 주세요. 그 메뉴가 없으면 아래 [주소 복사]를 눌러 Safari에서 열어 주세요.",
       androidSteps: ["Chrome 오른쪽 위 점 세 개(⋮)를 누릅니다.", "[홈 화면에 추가] 또는 [앱 설치]를 누릅니다.", "[설치] 또는 [추가]를 누르면 끝입니다."],
@@ -4640,7 +4733,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       openBrowser: "브라우저에서 열기", copyLink: "주소 복사", linkCopied: "주소를 복사했습니다. 브라우저 주소창에 붙여 넣어 주세요.",
       offlineNote: "저장해 두면 인터넷이 없어도 열려요.",
       close: "닫기", today: "오늘" },
-    "en": { installLink: "How to save to home screen", tabHome: "Home", installText: "Save this guide to your home screen", installBtn: "Save", installTitle: "Add to Home Screen",
+    "en": { mapRecenter: "To the stay", mapMore: "See details", mapAll: "All", installLink: "How to save to home screen", tabHome: "Home", installText: "Save this guide to your home screen", installBtn: "Save", installTitle: "Add to Home Screen",
       iosSteps: ["Tap the Share button (square with an arrow) at the bottom of Safari.", "Scroll down and tap [Add to Home Screen].", "Tap [Add] in the top right."],
       iosOther: "Tap the Share button (square with an arrow) next to the address bar, then tap [Add to Home Screen]. If you don't see it, tap [Copy link] below and open it in Safari.",
       androidSteps: ["Tap the three dots (⋮) at the top right of Chrome.", "Tap [Add to Home screen] or [Install app].", "Tap [Install] or [Add]."],
@@ -4649,7 +4742,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       openBrowser: "Open in browser", copyLink: "Copy link", linkCopied: "Link copied. Paste it into your browser.",
       offlineNote: "Once saved, it opens even without internet.",
       close: "Close", today: "Today" },
-    "ja": { installLink: "ホーム画面に保存する方法", tabHome: "ホーム", installText: "このガイドをホーム画面に保存しておきましょう", installBtn: "保存", installTitle: "ホーム画面に追加",
+    "ja": { mapRecenter: "宿へ", mapMore: "詳しく見る", mapAll: "すべて", installLink: "ホーム画面に保存する方法", tabHome: "ホーム", installText: "このガイドをホーム画面に保存しておきましょう", installBtn: "保存", installTitle: "ホーム画面に追加",
       iosSteps: ["Safari下の共有ボタン（四角に矢印）を押します。", "下にスクロールして[ホーム画面に追加]を押します。", "右上の[追加]を押して完了です。"],
       iosOther: "アドレスバー横の共有ボタン（四角に矢印）を押し、[ホーム画面に追加]を押してください。見つからない場合は下の[リンクをコピー]を押してSafariで開いてください。",
       androidSteps: ["Chrome右上の点が三つ（⋮）のボタンを押します。", "[ホーム画面に追加]または[アプリをインストール]を押します。", "[インストール]または[追加]を押して完了です。"],
@@ -4658,7 +4751,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       openBrowser: "ブラウザで開く", copyLink: "リンクをコピー", linkCopied: "リンクをコピーしました。ブラウザのアドレス欄に貼り付けてください。",
       offlineNote: "保存するとインターネットがなくても開けます。",
       close: "閉じる", today: "今日" },
-    "zh-CN": { installLink: "如何保存到主屏幕", tabHome: "首页", installText: "将本指南保存到手机主屏幕", installBtn: "保存", installTitle: "添加到主屏幕",
+    "zh-CN": { mapRecenter: "回住处", mapMore: "查看详情", mapAll: "全部", installLink: "如何保存到主屏幕", tabHome: "首页", installText: "将本指南保存到手机主屏幕", installBtn: "保存", installTitle: "添加到主屏幕",
       iosSteps: ["点按 Safari 底部的分享按钮（方框加箭头）。", "向下滑动，点按[添加到主屏幕]。", "点按右上角的[添加]即可。"],
       iosOther: "请点按地址栏旁的分享按钮（方框加箭头），再点按[添加到主屏幕]。如果没有这个选项，请点按下方[复制链接]，在 Safari 中打开。",
       androidSteps: ["点按 Chrome 右上角的三个点（⋮）。", "点按[添加到主屏幕]或[安装应用]。", "点按[安装]或[添加]即可。"],
@@ -4667,7 +4760,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       openBrowser: "在浏览器中打开", copyLink: "复制链接", linkCopied: "已复制链接，请粘贴到浏览器地址栏。",
       offlineNote: "保存后没有网络也能打开。",
       close: "关闭", today: "今天" },
-    "zh-TW": { installLink: "如何儲存到主畫面", tabHome: "首頁", installText: "將本指南儲存到手機主畫面", installBtn: "儲存", installTitle: "加入主畫面",
+    "zh-TW": { mapRecenter: "回住處", mapMore: "查看詳情", mapAll: "全部", installLink: "如何儲存到主畫面", tabHome: "首頁", installText: "將本指南儲存到手機主畫面", installBtn: "儲存", installTitle: "加入主畫面",
       iosSteps: ["點一下 Safari 下方的分享按鈕（方框加箭頭）。", "往下滑，點一下[加入主畫面]。", "點一下右上角的[新增]即可。"],
       iosOther: "請點一下網址列旁的分享按鈕（方框加箭頭），再點一下[加入主畫面]。如果沒有這個選項，請點一下下方[複製連結]，在 Safari 中開啟。",
       androidSteps: ["點一下 Chrome 右上角的三個點（⋮）。", "點一下[加到主畫面]或[安裝應用程式]。", "點一下[安裝]或[新增]即可。"],
@@ -4808,6 +4901,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     about: '<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 11h18v6H3z"/><path d="M5 17v2"/><path d="M19 17v2"/>',
     amenities: '<path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M4 6l1 1 2-2"/><path d="M4 12l1 1 2-2"/><path d="M4 18l1 1 2-2"/>',
     nearby: '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/>',
+    cafe: '<path d="M4 8h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3v2"/><path d="M12 3v2"/>',
     globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/>'
   };
   function icon(id) { return svg(ICONS[id] || ICONS.doc); }
@@ -4908,6 +5002,14 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       }))]));
     }
     if (s.note) box.appendChild(el("p", { cls: "note-box", text: s.note }));
+    if (s.place) {
+      var pq = s.place.naver || s.title || "";
+      box.appendChild(el("div", { cls: "btn-row" }, [
+        linkBtn({ label: T("btnNaverMap"), url: "https://map.naver.com/p/search/" + encodeURIComponent(pq) }),
+        linkBtn({ label: T("btnGoogleMap"), url: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(pq) + (s.place.gid ? "&query_place_id=" + encodeURIComponent(s.place.gid) : "") })
+      ]));
+      return box;
+    }
     var links = arr(s.links).filter(function (l) { return l && l.url; });
     if (links.length) box.appendChild(el("div", { cls: "btn-row" }, links.map(function (l) { return linkBtn(l); })));
     return box;
@@ -4915,16 +5017,17 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   function sections(list, opts) {
     opts = opts || {};
     var out = [];
-    arr(list).forEach(function (s) {
-      if (s.group) out.push(el("p", { cls: "sec-group", text: s.group }));
+    var gi = -1;
+    arr(list).forEach(function (s, si) {
+      if (s.group) { gi++; out.push(el("p", { cls: "sec-group", text: s.group, "data-g": gi })); }
       if (opts.foldable && s.title) {
-        var d = el("details", { cls: "card" }, [
+        var d = el("details", { cls: "card", "data-i": si, "data-g": gi }, [
           el("summary", null, [el("span", { text: s.title }), el("span", { cls: "mark", text: "›" })]),
           secBody(s, opts.same)
         ]);
         out.push(d);
       } else {
-        out.push(el("div", { cls: "card" }, [s.title ? el("h3", { cls: "card-title", text: s.title }) : null, secBody(s, opts.same)]));
+        out.push(el("div", { cls: "card", "data-i": si, "data-g": gi }, [s.title ? el("h3", { cls: "card-title", text: s.title }) : null, secBody(s, opts.same)]));
       }
     });
     return out;
@@ -5197,8 +5300,190 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   function viewPage(p) {
     var out = pageHead(p.title || p.menu, p.desc);
     if (p.intro) out.push(el("p", { cls: "intro", text: p.intro }));
-    out = out.concat(sections(p.sections, { foldable: !!p.foldable, same: !!p.samePhotoSize }));
+    var secNodes = sections(p.sections, { foldable: !!p.foldable, same: !!p.samePhotoSize });
+    if (p.map) out = out.concat(placeMap(p, secNodes));
+    out = out.concat(secNodes);
     out.push(bottomBack());
+    return out;
+  }
+
+
+  /* ---------- 지도 (네이버 지도, 안 되면 OpenStreetMap) ---------- */
+  var pmap = null;            /* 지금 화면의 지도 */
+  var naverState = "", leafletState = "";
+  function loadScript(src, ok, fail) {
+    var js = document.createElement("script");
+    js.src = src;
+    var timer = setTimeout(function () { fail(); }, 12000);
+    js.onload = function () { clearTimeout(timer); ok(); };
+    js.onerror = function () { clearTimeout(timer); fail(); };
+    document.head.appendChild(js);
+  }
+  function loadNaver(cb) {
+    if (naverState === "ok" && window.naver && window.naver.maps) { cb(true); return; }
+    if (naverState === "fail" || !BASE.naverMapKey) { cb(false); return; }
+    var w = loadNaver.w || (loadNaver.w = []); w.push(cb);
+    if (naverState === "loading") return;
+    naverState = "loading";
+    function done(ok) { naverState = ok ? "ok" : "fail"; w.splice(0).forEach(function (f) { f(ok); }); }
+    /* 인증 실패(이 주소가 네이버에 등록되지 않음 등): OpenStreetMap 지도로 바꿉니다 */
+    window.navermap_authFailure = function () {
+      naverState = "fail";
+      if (pmap && pmap.provider === "naver") { pmap.reset(); startMap(pmap); }
+    };
+    loadScript("https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=" + encodeURIComponent(BASE.naverMapKey),
+      function () { done(!!(window.naver && window.naver.maps)); }, function () { done(false); });
+  }
+  function loadLeaflet(cb) {
+    if (window.L && window.L.map) { cb(true); return; }
+    if (leafletState === "fail") { cb(false); return; }
+    var w = loadLeaflet.w || (loadLeaflet.w = []); w.push(cb);
+    if (leafletState === "loading") return;
+    leafletState = "loading";
+    function done(ok) { leafletState = ok ? "ok" : "fail"; w.splice(0).forEach(function (f) { f(ok); }); }
+    var css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+    document.head.appendChild(css);
+    loadScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js",
+      function () { done(!!(window.L && window.L.map)); }, function () { done(false); });
+  }
+  function pinHtml(name, color, stay) {
+    return '<div class="pin' + (stay ? " stay" : "") + '" style="background:' + color + '">' + icon(name) + "</div>";
+  }
+  function stayPos() { return { lat: Number(BASE.stayLatitude) || 37.564, lng: Number(BASE.stayLongitude) || 127.005 }; }
+  function popBox(pt) {
+    var box = el("div", null, [el("b", { text: pt.name }), pt.sub ? el("span", { text: pt.sub }) : null]);
+    box.appendChild(el("button", { cls: "pop-more", type: "button", text: X("mapMore"), onclick: function () { openCard(pt.i); } }));
+    return box;
+  }
+  function openCard(i) {
+    if (pmap && pmap.closePopup) pmap.closePopup();
+    var card = document.querySelector('.card[data-i="' + i + '"]');
+    if (!card) return;
+    if (card.classList.contains("hide") && pmap && pmap.setFilter) pmap.setFilter(-1);
+    if (card.tagName === "DETAILS") card.open = true;
+    card.scrollIntoView({ behavior: "smooth", block: "start" });
+    card.classList.add("flash");
+    setTimeout(function () { card.classList.remove("flash"); }, 1600);
+  }
+  function startMap(pm) {
+    loadNaver(function (okN) {
+      if (pm !== pmap) return;
+      if (okN) { try { naverMap(pm); return; } catch (e) { pm.reset(); } }
+      loadLeaflet(function (ok) {
+        if (pm !== pmap) return;
+        if (!ok) { pm.wrap.classList.add("off"); return; }
+        try { leafletMap(pm); } catch (e) { pm.wrap.classList.add("off"); }
+      });
+    });
+  }
+  function recenterBtn(fn) {
+    return el("button", { cls: "map-recenter", type: "button", text: X("mapRecenter"), onclick: fn });
+  }
+  function naverMap(pm) {
+    var nm = window.naver.maps, st = stayPos();
+    var map = new nm.Map(pm.el, {
+      center: new nm.LatLng(st.lat, st.lng), zoom: BASE.mapZoom || 16,
+      zoomControl: true, zoomControlOptions: { position: nm.Position.TOP_LEFT, style: nm.ZoomControlStyle.SMALL },
+      scrollWheel: false, mapDataControl: false, scaleControl: false
+    });
+    pm.map = map; pm.provider = "naver";
+    var info = new nm.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: true, pixelOffset: new nm.Point(0, -8) });
+    pm.closePopup = function () { info.close(); };
+    var dark = getComputedStyle(document.documentElement).getPropertyValue("--dark").trim() || "#3D4A3E";
+    var label = '<div class="nv-label">' + String(C.stayName || "").replace(/[<>&]/g, "") + "</div>";
+    new nm.Marker({ position: new nm.LatLng(st.lat, st.lng), map: map, zIndex: 1000, title: C.stayName,
+      icon: { content: '<div class="nv-pin">' + label + pinHtml("home", dark, true) + "</div>", anchor: new nm.Point(22, 22) } });
+    pm.points.forEach(function (pt) {
+      var m = new nm.Marker({ position: new nm.LatLng(pt.lat, pt.lng), map: map, title: pt.name,
+        icon: { content: '<div class="nv-pin">' + pinHtml(pt.icon, pt.color, false) + "</div>", anchor: new nm.Point(17, 17) } });
+      nm.Event.addListener(m, "click", function () { var b = popBox(pt); b.className = "nv-pop"; info.setContent(b); info.open(map, m); });
+      pt.marker = m;
+    });
+    nm.Event.addListener(map, "click", function () { info.close(); });
+    pm.show = function (pt, on) { pt.marker.setMap(on ? map : null); };
+    pm.fit = function (list) {
+      var b = new nm.LatLngBounds(new nm.LatLng(st.lat, st.lng), new nm.LatLng(st.lat, st.lng));
+      list.forEach(function (pt) { b.extend(new nm.LatLng(pt.lat, pt.lng)); });
+      map.fitBounds(b, { top: 70, right: 40, bottom: 40, left: 40 });
+      if (map.getZoom() > 17) map.setZoom(17);
+    };
+    pm.wrap.appendChild(recenterBtn(function () { map.setCenter(new nm.LatLng(st.lat, st.lng)); map.setZoom(BASE.mapZoom || 16); }));
+    setTimeout(function () { nm.Event.trigger(map, "resize"); pm.apply(); }, 60);
+  }
+  function leafletMap(pm) {
+    var Lf = window.L, st = stayPos();
+    var map = Lf.map(pm.el, { zoomControl: true, scrollWheelZoom: false }).setView([st.lat, st.lng], BASE.mapZoom || 16);
+    pm.map = map; pm.provider = "leaflet";
+    pm.closePopup = function () { map.closePopup(); };
+    Lf.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    var dark = getComputedStyle(document.documentElement).getPropertyValue("--dark").trim() || "#3D4A3E";
+    Lf.marker([st.lat, st.lng], { zIndexOffset: 1000, title: C.stayName,
+      icon: Lf.divIcon({ className: "", html: pinHtml("home", dark, true), iconSize: [44, 44], iconAnchor: [22, 22] }) })
+      .addTo(map).bindTooltip(C.stayName, { permanent: true, direction: "top", offset: [0, -24], className: "stay-label" });
+    pm.points.forEach(function (pt) {
+      pt.marker = Lf.marker([pt.lat, pt.lng], { title: pt.name,
+        icon: Lf.divIcon({ className: "", html: pinHtml(pt.icon, pt.color, false), iconSize: [34, 34], iconAnchor: [17, 17], popupAnchor: [0, -17] }) })
+        .bindPopup(popBox(pt)).addTo(map);
+    });
+    pm.show = function (pt, on) { if (on) { if (!map.hasLayer(pt.marker)) pt.marker.addTo(map); } else if (map.hasLayer(pt.marker)) map.removeLayer(pt.marker); };
+    pm.fit = function (list) {
+      var pts = list.map(function (pt) { return [pt.lat, pt.lng]; }); pts.push([st.lat, st.lng]);
+      map.fitBounds(Lf.latLngBounds(pts), { paddingTopLeft: [36, 64], paddingBottomRight: [36, 36], maxZoom: 17 });
+    };
+    pm.wrap.appendChild(recenterBtn(function () { map.setView([st.lat, st.lng], BASE.mapZoom || 16); }));
+    setTimeout(function () { map.invalidateSize(); pm.apply(); }, 60);
+  }
+  /* 지도와 분류 버튼을 만듭니다. nodes 는 아래에 나올 칸들입니다 */
+  function placeMap(p, nodes) {
+    var styles = arr(p.mapStyles);
+    var groups = [], points = [];
+    arr(p.sections).forEach(function (s, i) {
+      if (s.group) groups.push(s.group);
+      var g = groups.length - 1;
+      var sty = styles[Math.max(g, 0)] || styles[0] || { icon: "nearby", color: "#5C6B78" };
+      if (s.place && typeof s.place.lat === "number") {
+        points.push({ i: i, g: g, lat: s.place.lat, lng: s.place.lng, name: s.title || "",
+          sub: arr(s.text)[0] || "", icon: sty.icon, color: sty.color });
+      }
+    });
+    if (!points.length) return [];
+    var wrap = el("div", { cls: "map-wrap" }), mapEl = el("div", { cls: "map" });
+    wrap.appendChild(mapEl);
+    var pm = { wrap: wrap, el: mapEl, points: points, filter: -1, map: null, provider: "" };
+    pm.reset = function () {
+      pm.el.innerHTML = ""; pm.map = null; pm.provider = "";
+      Array.prototype.slice.call(pm.wrap.querySelectorAll(".map-recenter")).forEach(function (b) { b.remove(); });
+    };
+    pm.apply = function () {
+      var shown = [];
+      points.forEach(function (pt) { var on = pm.filter === -1 || pt.g === pm.filter; if (pm.show) pm.show(pt, on); if (on) shown.push(pt); });
+      if (pm.closePopup) pm.closePopup();
+      if (pm.fit && shown.length) pm.fit(shown);
+    };
+    var out = [wrap];
+    if (p.mapChips && groups.length > 1) {
+      var chips = el("div", { cls: "chips" });
+      var names = [X("mapAll")].concat(groups);
+      pm.setFilter = function (f) {
+        pm.filter = f;
+        Array.prototype.slice.call(chips.children).forEach(function (b, k) { b.classList.toggle("on", k - 1 === f); });
+        nodes.forEach(function (n) {
+          var g = n.getAttribute && n.getAttribute("data-g");
+          if (g == null) return;
+          n.classList.toggle("hide", f !== -1 && Number(g) !== f);
+        });
+        pm.apply();
+      };
+      names.forEach(function (nm, k) {
+        chips.appendChild(el("button", { cls: "chip" + (k === 0 ? " on" : ""), type: "button", text: nm, onclick: function () { pm.setFilter(k - 1); } }));
+      });
+      out.push(chips);
+    }
+    pmap = pm;
+    setTimeout(function () { if (pmap === pm && document.body.contains(wrap)) startMap(pm); }, 30);
     return out;
   }
 

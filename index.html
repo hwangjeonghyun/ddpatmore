@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="only light">
+<meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#F6F2EA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -4266,6 +4266,15 @@ const CONFIG = {
    색은 숙소 사진(크림색 벽, 원목, 세이지 그린)에서 가져왔습니다.
    색을 바꾸고 싶으면 맨 위 CONFIG의 accentColor, backgroundColor, darkColor를 바꿔 주세요.
    ========================================================== */
+/* 휴대폰 다크 모드
+   삼성 인터넷, Chrome 같은 브라우저는 다크 모드를 직접 처리하지 않는 사이트를 강제로 어둡게 칠합니다.
+   이 앱은 "다크 모드도 직접 처리한다"고 알리고, 다크 모드에서도 같은 밝은 색을 씁니다. */
+:root { color-scheme: light dark; }
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: light dark; }
+  html, body { background: var(--page); color: var(--text); }
+}
+
 :root {
   --accent: #6B7F6A;
   --dark: #3D4A3E;
@@ -4285,7 +4294,6 @@ const CONFIG = {
 * { box-sizing: border-box; }
 html, body {
   margin: 0; padding: 0;
-  color-scheme: only light;
   background: var(--page);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Hiragino Sans", "PingFang TC", "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", "Noto Sans KR", sans-serif;

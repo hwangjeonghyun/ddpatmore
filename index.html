@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title></title>
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="at more ddp">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>at more ddp</title>
 
 <script>
 /* ==================================================================
@@ -260,7 +268,34 @@ const CONFIG = {
     noContact: "연락처가 아직 없습니다.", // 연락처를 하나도 넣지 않았을 때 나오는 글자
 
     copied: "복사했습니다", // 복사 성공 시 아래에 잠깐 나오는 글자
-    copyFail: "복사하지 못했습니다. 글자를 길게 눌러 복사해 주세요." // 복사 실패 시 나오는 글자
+    copyFail: "복사하지 못했습니다. 글자를 길게 눌러 복사해 주세요.", // 복사 실패 시 나오는 글자
+
+    /* 홈 화면에 저장 (첫 화면 메뉴 위 안내 칸과, 저장하기를 눌렀을 때 나오는 설명) */
+    installText: "이 안내를 휴대폰 홈 화면에 저장해 두세요", // 첫 화면 안내 칸 글자
+    installBtn: "저장하기", // 안내 칸 버튼 글자
+    installTitle: "홈 화면에 저장하기", // 설명 창 제목
+    iosSteps: [ // 아이폰 Safari 순서
+      "Safari 아래쪽의 공유 버튼(네모 위 화살표)을 누릅니다.",
+      "목록을 내려 [홈 화면에 추가]를 누릅니다.",
+      "오른쪽 위 [추가]를 누르면 끝입니다."
+    ],
+    iosOther: "주소창 옆 공유 버튼(네모 위 화살표)을 누른 뒤 [홈 화면에 추가]를 눌러 주세요. 그 메뉴가 없으면 아래 [주소 복사]를 눌러 Safari에서 열어 주세요.", // 아이폰에서 Safari가 아닌 브라우저일 때
+    androidSteps: [ // 안드로이드 Chrome 순서
+      "Chrome 오른쪽 위 점 세 개(⋮)를 누릅니다.",
+      "[홈 화면에 추가] 또는 [앱 설치]를 누릅니다.",
+      "[설치] 또는 [추가]를 누르면 끝입니다."
+    ],
+    samsungSteps: [ // 삼성 인터넷 순서
+      "삼성 인터넷 아래쪽 메뉴(☰)를 누릅니다.",
+      "[현재 페이지 추가] → [홈 화면]을 누릅니다.",
+      "[추가]를 누르면 끝입니다."
+    ],
+    inAppNote: "지금은 카카오톡 같은 앱 안에서 열려 있어서 저장이 안 돼요. 아래 버튼으로 브라우저에서 연 다음 다시 [저장하기]를 눌러 주세요.", // 카카오톡, 라인 등 앱 안에서 열었을 때
+    openBrowser: "브라우저에서 열기", // 브라우저로 여는 버튼 글자
+    copyLink: "주소 복사", // 주소 복사 버튼 글자
+    linkCopied: "주소를 복사했습니다. 브라우저 주소창에 붙여 넣어 주세요.", // 주소 복사 후 나오는 글자
+    offlineNote: "저장해 두면 인터넷이 없어도 열려요.", // 순서 아래 작은 글자
+    close: "닫기" // 닫기 버튼 글자
   }
 };
 /* ==================================================================
@@ -470,6 +505,92 @@ const CONFIG = {
     text-align: center;
   }
   #toast.show { opacity: 1; }
+
+  /* 홈 화면에 저장 */
+  .install {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 14px 14px 14px 16px;
+    background: var(--soft);
+    border-radius: 14px;
+  }
+  .install-text { flex: 1 1 auto; min-width: 0; font-size: 16px; font-weight: 600; line-height: 1.45; }
+  .install-btn {
+    flex: 0 0 auto;
+    min-height: 48px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 24px;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .install-x {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 48px;
+    margin-right: -6px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .sheet-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+  }
+  .sheet {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #FFFFFF;
+    border-radius: 18px 18px 0 0;
+    padding: 22px 16px calc(20px + env(safe-area-inset-bottom));
+  }
+  .sheet h3 { margin: 0 0 14px; font-size: 20px; font-weight: 600; }
+  .steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  .steps li {
+    position: relative;
+    padding: 10px 0 10px 40px;
+    border-top: 1px solid var(--line);
+    counter-increment: step;
+  }
+  .steps li:first-child { border-top: none; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+  }
+  .note-box {
+    margin: 0;
+    padding: 14px 16px;
+    background: var(--soft);
+    border-radius: 10px;
+  }
 </style>
 </head>
 <body>
@@ -527,7 +648,8 @@ const CONFIG = {
     toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2000);
   }
 
-  function copyText(text) {
+  function copyText(text, okMsg) {
+    var done = okMsg || T.copied;
     function fallback() {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -541,10 +663,10 @@ const CONFIG = {
       var ok = false;
       try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
       document.body.removeChild(ta);
-      toast(ok ? T.copied : T.copyFail);
+      toast(ok ? done : T.copyFail);
     }
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(function () { toast(T.copied); }, fallback);
+      navigator.clipboard.writeText(text).then(function () { toast(done); }, fallback);
     } else {
       fallback();
     }
@@ -594,6 +716,101 @@ const CONFIG = {
     });
   }
 
+  /* ---------- 홈 화면에 저장 ---------- */
+  var INSTALL_KEY = "atmoreddp-install-hidden";
+  function isStandalone() {
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+  }
+  /* 안드로이드 Chrome은 버튼 한 번으로 바로 설치 창이 뜹니다 */
+  var installEvent = null;
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); installEvent = e; });
+  window.addEventListener("appinstalled", function () {
+    try { localStorage.setItem(INSTALL_KEY, "1"); } catch (e) {}
+    var b = document.querySelector(".install");
+    if (b && b.parentNode) b.parentNode.removeChild(b);
+  });
+  function deviceInfo() {
+    var ua = navigator.userAgent || "";
+    var ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document);
+    return {
+      ios: ios,
+      iosSafari: ios && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|Whale|NAVER|KAKAOTALK|Line\/|Instagram|FBAN|FBAV/.test(ua),
+      kakao: /KAKAOTALK/i.test(ua),
+      line: /Line\//.test(ua),
+      inApp: /KAKAOTALK|Instagram|FBAN|FBAV|Line\/|NAVER\(inapp|DaumApps|MicroMessenger|everytimeApp|BAND\//i.test(ua),
+      samsung: /SamsungBrowser/i.test(ua)
+    };
+  }
+  function pageUrl() { return location.href.split("#")[0]; }
+  function openInBrowser(d) {
+    var url = pageUrl();
+    if (d.kakao) { location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(url); return; }
+    if (d.line) { location.href = url + (url.indexOf("?") < 0 ? "?" : "&") + "openExternalBrowser=1"; return; }
+    if (!d.ios && /Android/i.test(navigator.userAgent)) {
+      location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+      return;
+    }
+    copyText(url, T.linkCopied);
+  }
+  function installSheet() {
+    var d = deviceInfo();
+    var bg = el("div", "sheet-bg");
+    function close() { if (bg.parentNode) bg.parentNode.removeChild(bg); }
+    bg.addEventListener("click", function (e) { if (e.target === bg) close(); });
+    var sheet = el("div", "sheet");
+    sheet.setAttribute("role", "dialog");
+    sheet.setAttribute("aria-modal", "true");
+    sheet.appendChild(el("h3", "", T.installTitle));
+    if (d.inApp) {
+      sheet.appendChild(el("p", "note-box", T.inAppNote));
+      sheet.appendChild(actionButton(T.openBrowser, function () { openInBrowser(d); }, "btn-primary"));
+      sheet.appendChild(actionButton(T.copyLink, function () { copyText(pageUrl(), T.linkCopied); }));
+    } else if (d.ios && !d.iosSafari) {
+      sheet.appendChild(el("p", "note-box", T.iosOther));
+      sheet.appendChild(actionButton(T.copyLink, function () { copyText(pageUrl(), T.linkCopied); }, "btn-primary"));
+    } else {
+      var ol = el("ol", "steps");
+      ((d.ios ? T.iosSteps : d.samsung ? T.samsungSteps : T.androidSteps) || []).forEach(function (t) {
+        ol.appendChild(el("li", "", t));
+      });
+      sheet.appendChild(ol);
+      if (T.offlineNote) sheet.appendChild(el("p", "hint", T.offlineNote));
+    }
+    sheet.appendChild(actionButton(T.close, close));
+    bg.appendChild(sheet);
+    document.body.appendChild(bg);
+  }
+  function startInstall() {
+    if (installEvent) {
+      var ev = installEvent;
+      installEvent = null;
+      ev.prompt();
+      if (ev.userChoice) ev.userChoice.then(function (r) { if (!r || r.outcome !== "accepted") installEvent = ev; }, function () {});
+      return;
+    }
+    installSheet();
+  }
+  function installBanner() {
+    var hidden = false;
+    try { hidden = localStorage.getItem(INSTALL_KEY) === "1"; } catch (e) {}
+    if (hidden || isStandalone() || !T.installText) return null;
+    var box = el("div", "install");
+    box.appendChild(el("div", "install-text", T.installText));
+    var b = el("button", "install-btn", T.installBtn);
+    b.type = "button";
+    b.addEventListener("click", startInstall);
+    box.appendChild(b);
+    var x = el("button", "install-x", "×");
+    x.type = "button";
+    x.setAttribute("aria-label", T.close || "");
+    x.addEventListener("click", function () {
+      try { localStorage.setItem(INSTALL_KEY, "1"); } catch (e) {}
+      if (box.parentNode) box.parentNode.removeChild(box);
+    });
+    box.appendChild(x);
+    return box;
+  }
+
   /* 첫 화면 + 메뉴 */
   function renderHome(root) {
     var photoWrap = el("div", "photo");
@@ -616,6 +833,9 @@ const CONFIG = {
     if (C.beds) facts.push(fill(T.summaryBeds, C.beds));
     if (C.bathrooms) facts.push(fill(T.summaryBathrooms, C.bathrooms));
     if (facts.length) root.appendChild(el("p", "facts", facts.join(T.summarySeparator || " ")));
+
+    var install = installBanner();
+    if (install) root.appendChild(install);
 
     var menu = el("nav", "menu");
     menu.setAttribute("aria-label", T.menuTitle || "");
@@ -854,6 +1074,11 @@ const CONFIG = {
 
   window.addEventListener("hashchange", route);
   route();
+
+  /* 홈 화면 저장과 인터넷 없이 열기에 필요한 장치 */
+  if ("serviceWorker" in navigator && /^https?:/.test(location.protocol)) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
 })();
 </script>
 </body>

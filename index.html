@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#F6F2EA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -29,6 +29,8 @@ const CONFIG = {
 
   /* ---------- 색 ---------- */
   accentColor: "#6B7F6A", // 강조색. 버튼, 제목, 메뉴 글자 색이 모두 이 색으로 바뀝니다
+  backgroundColor: "#F6F2EA", // 바탕색. 숙소 벽처럼 따뜻한 아이보리입니다
+  cardColor: "#FFFDF9", // 메뉴 칸과 안내 칸 색
 
   /* ---------- 첫 화면 ---------- */
   name: "at more ddp", // 숙소 이름. 첫 화면 큰 글자와 브라우저 탭 이름에 나옵니다
@@ -315,15 +317,17 @@ const CONFIG = {
     --accent: #6B7F6A;
     --text: #222222;
     --muted: #6B6B6B;
-    --line: #ECECEC;
-    --soft: #F4F5F3;
+    --line: #E7DFD2;
+    --soft: #EDE6DA;
+    --bg: #F6F2EA;
+    --card: #FFFDF9;
     --shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
-    background: #FFFFFF;
+    background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
     font-size: 16px;
@@ -382,7 +386,7 @@ const CONFIG = {
     justify-content: center;
     min-height: 88px;
     padding: 16px;
-    background: #FFFFFF;
+    background: var(--card);
     border: 1px solid var(--line);
     border-radius: 14px;
     box-shadow: var(--shadow);
@@ -405,7 +409,7 @@ const CONFIG = {
 
   /* 카드 */
   .card {
-    background: #FFFFFF;
+    background: var(--card);
     border: 1px solid var(--line);
     border-radius: 14px;
     box-shadow: var(--shadow);
@@ -470,7 +474,7 @@ const CONFIG = {
     margin-top: 12px;
     border-radius: 8px;
     border: 1px solid var(--accent);
-    background: #FFFFFF;
+    background: var(--card);
     color: var(--accent);
     font-family: inherit;
     font-size: 16px;
@@ -589,7 +593,7 @@ const CONFIG = {
     max-width: 480px;
     max-height: 90vh;
     overflow-y: auto;
-    background: #FFFFFF;
+    background: var(--card);
     border-radius: 18px 18px 0 0;
     padding: 22px 16px calc(20px + env(safe-area-inset-bottom));
   }
@@ -640,6 +644,14 @@ const CONFIG = {
 
   if (C.accentColor) {
     document.documentElement.style.setProperty("--accent", C.accentColor);
+  }
+  if (C.backgroundColor) {
+    document.documentElement.style.setProperty("--bg", C.backgroundColor);
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute("content", C.backgroundColor);
+  }
+  if (C.cardColor) {
+    document.documentElement.style.setProperty("--card", C.cardColor);
   }
   document.title = C.name || "";
 

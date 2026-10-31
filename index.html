@@ -5236,6 +5236,33 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     app.appendChild(main);
     app.appendChild(tabbar(cur));
   }
+  /* 확인 화면: 첫 화면 맨 아래 숙소 이름을 5번 누르면 휴대폰 정보가 나옵니다 (문제 찾기용) */
+  var BUILD = "2026-10-31b";
+  var tapCount = 0, tapTimer = null;
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".footer")) return;
+    tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function () { tapCount = 0; }, 1500);
+    if (tapCount < 5) return;
+    tapCount = 0;
+    var mm = function (q) { try { return window.matchMedia(q).matches ? "yes" : "no"; } catch (x) { return "?"; } };
+    var ua = navigator.userAgent || "";
+    var browser = /SamsungBrowser\/([\d.]+)/.test(ua) ? "Samsung Internet " + RegExp.$1
+      : /KAKAOTALK/i.test(ua) ? "KakaoTalk" : /NAVER/.test(ua) ? "Naver"
+      : /Chrome\/([\d.]+)/.test(ua) ? "Chrome " + RegExp.$1 : /Safari/.test(ua) ? "Safari" : "?";
+    var cs = document.querySelector('meta[name="color-scheme"]');
+    var info = [
+      "build: " + BUILD,
+      "browser: " + browser,
+      "dark mode: " + mm("(prefers-color-scheme: dark)"),
+      "home app: " + (isStandalone() ? "yes" : "no"),
+      "color-scheme: " + (cs ? cs.getAttribute("content") : "-"),
+      "bg: " + getComputedStyle(document.body).backgroundColor,
+      ua
+    ].join("\n");
+    var box = el("pre", { style: "white-space:pre-wrap;word-break:break-all;font-size:12px;line-height:1.5;background:#fff;color:#222;border:1px solid #ccc;border-radius:8px;padding:12px;margin:12px 0", text: info });
+    e.target.closest(".footer").after(box);
+  });
+
   window.addEventListener("hashchange", function () { render(); window.scrollTo(0, 0); });
   render();
 

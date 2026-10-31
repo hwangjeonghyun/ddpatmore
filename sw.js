@@ -1,6 +1,6 @@
 /* 인터넷이 없어도 안내가 열리도록 파일을 휴대폰에 저장해 두는 장치입니다.
    index.html 이나 사진을 바꾼 뒤에는 아래 VERSION 숫자를 하나 올려 주세요. */
-var VERSION = "atmoreddp-1";
+var VERSION = "atmoreddp-2";
 var FILES = [
   "./",
   "./index.html",
@@ -8,7 +8,14 @@ var FILES = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/apple-touch-icon.png",
-  "./img/main.jpg"
+  "./img/main.jpg",
+  "./img/about/bedroom.jpg",
+  "./img/about/lamp.jpg",
+  "./img/about/lattice-detail.jpg",
+  "./img/about/lattice-door.jpg",
+  "./img/about/living.jpg",
+  "./img/about/window-desk.jpg",
+  "./img/about/window-sofa.jpg"
 ];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) {

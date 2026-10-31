@@ -33,8 +33,8 @@ const CONFIG = {
   /* ---------- 첫 화면 ---------- */
   name: "at more ddp", // 숙소 이름. 첫 화면 큰 글자와 브라우저 탭 이름에 나옵니다
   tagline: "stay more. feel more. remember more.", // 한 줄 소개. 숙소 이름 바로 아래에 나옵니다
-  photo: "img/main.jpg", // 첫 화면 사진 위치. img 폴더에 main.jpg 를 넣으면 나옵니다. 없으면 회색 칸으로 보입니다
-  photoAlt: "at more ddp 숙소 사진", // 사진이 안 보일 때 대신 읽히는 설명
+  photo: "img/main.jpg", // 첫 화면 사진 위치. img 폴더에 main.jpg 를 넣으면 나옵니다. 없으면 회색 칸으로 보입니다 [지금은 임시 사진]
+  photoAlt: "at more ddp 침실. 퀸 침대 두 개와 창가의 종이 조명", // 사진이 안 보일 때 대신 읽히는 설명
 
   /* ---------- 숙소 규모 (첫 화면 사진 아래 한 줄) ---------- */
   maxGuests: "6", // 최대 인원
@@ -67,10 +67,12 @@ const CONFIG = {
   phone: "", // 전화번호. 비워 두면 전화 버튼이 안 보입니다
 
   /* ---------- 숙소 소개 화면 ---------- */
-  /* 칸 하나가 { } 하나입니다. title 은 칸 제목, text 는 문장, list 는 목록입니다 */
+  /* 칸 하나가 { } 하나입니다. title 은 칸 제목, text 는 문장, list 는 목록, photos 는 사진입니다 */
+  /* photos 에 사진을 여러 장 넣으면 옆으로 넘겨 보는 사진이 됩니다. 비워 두면 사진 없이 나옵니다 */
   about: [
     {
       title: "", // 맨 위 칸 제목. 비워 두면 제목 없이 문장만 나옵니다
+      photos: ["img/about/living.jpg", "img/about/lattice-door.jpg", "img/about/lattice-detail.jpg"], // 거실, 격자문 사진 [임시 사진]
       text: [ // 숙소 소개 문장. 한 줄에 한 문단
         "동대문의 한가운데, 조용한 쉼은 그대로.",
         "고재 원목과 격자문, 은은한 조명. 창가에서 아침을 맞고, 조적 욕조에서 하루를 마무리합니다."
@@ -78,7 +80,8 @@ const CONFIG = {
     },
     {
       title: "침실", // 칸 제목
-      text: ["화이트 침구와 낮은 조명. 가족, 친구와 함께 머물기 좋습니다."], // 침실 설명
+      photos: ["img/about/bedroom.jpg"], // 침실 사진 [임시 사진]
+      text:["화이트 침구와 낮은 조명. 가족, 친구와 함께 머물기 좋습니다."], // 침실 설명
       list: [ // 침실 구성
         "침실 1: 퀸사이즈 침대 2개",
         "침실 2: 퀸사이즈 침대 1개"
@@ -86,7 +89,8 @@ const CONFIG = {
     },
     {
       title: "창가", // 칸 제목
-      text: ["햇살이 드는 창가에 소파와 테이블이 있습니다. 아침에는 여행 계획을, 저녁에는 하루 이야기를."] // 창가 설명
+      photos: ["img/about/window-sofa.jpg", "img/about/window-desk.jpg", "img/about/lamp.jpg"], // 창가 소파, 책상, 조명 사진 [임시 사진]
+      text:["햇살이 드는 창가에 소파와 테이블이 있습니다. 아침에는 여행 계획을, 저녁에는 하루 이야기를."] // 창가 설명
     },
     {
       title: "조적 욕조", // 칸 제목
@@ -506,6 +510,34 @@ const CONFIG = {
   }
   #toast.show { opacity: 1; }
 
+  /* 숙소 소개 사진 */
+  .gallery { margin: -6px -4px 16px; }
+  .gallery img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--soft);
+  }
+  .gallery.many {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .gallery.many::-webkit-scrollbar { display: none; }
+  .gallery.many img {
+    flex: 0 0 auto;
+    width: auto;
+    height: 300px;
+    max-width: 88%;
+    aspect-ratio: auto;
+    scroll-snap-align: start;
+  }
+
   /* 홈 화면에 저장 */
   .install {
     display: flex;
@@ -706,10 +738,27 @@ const CONFIG = {
     if (T.footer) root.appendChild(el("p", "footer", T.footer));
   }
 
+  /* 사진 묶음. 한 장이면 꽉 차게, 여러 장이면 옆으로 넘겨 봅니다 */
+  function gallery(photos, alt) {
+    var g = el("div", photos.length > 1 ? "gallery many" : "gallery");
+    photos.forEach(function (src) {
+      var img = el("img");
+      img.src = src;
+      img.alt = alt || "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.onerror = function () { if (img.parentNode) img.parentNode.removeChild(img); };
+      g.appendChild(img);
+    });
+    return g;
+  }
+
   /* 칸 묶음 그리기 (숙소 소개, 편의시설, 이용 규칙) */
   function renderBlocks(root, blocks) {
     (blocks || []).forEach(function (b) {
-      var c = card(b.title);
+      var c = card("");
+      if (b.photos && b.photos.length) c.appendChild(gallery(b.photos, b.title || C.name));
+      if (b.title) c.appendChild(el("h2", "card-title", b.title));
       (b.text || []).forEach(function (t) { c.appendChild(el("p", "text", t)); });
       if (b.list && b.list.length) c.appendChild(list(b.list));
       root.appendChild(c);

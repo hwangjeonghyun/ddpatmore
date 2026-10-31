@@ -4443,6 +4443,12 @@ button { -webkit-tap-highlight-color: transparent; }
 .row-sub { display: block; font-size: 15px; color: var(--faint); margin-top: 2px; line-height: 1.4; }
 .row-arrow { flex: 0 0 auto; font-size: 22px; color: var(--faint); }
 .footer { text-align: center; font-size: 14px; color: var(--faint); margin: 36px 0 0; }
+.install-link { text-align: center; margin: 14px 0 0; }
+.install-link button {
+  min-height: 44px; padding: 0 12px; border: none; background: none;
+  color: var(--accent); font-size: 15px; font-family: inherit;
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
 .footer b { display: block; font-family: var(--serif); font-size: 16px; color: var(--sub); font-weight: 600; }
 
 /* 안내 화면 */
@@ -4621,51 +4627,51 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   var C = BASE;
   var LANG = "ko";
   var LANG_KEY = "atmoreddp-lang";
-  var INSTALL_KEY = "atmoreddp-install-hidden";
+  var INSTALL_KEY = "atmoreddp-install-hidden-2";
 
   /* 화면 안의 작은 글자 중 CONFIG에 없는 것 (언어별) */
   var EXTRA = {
-    "ko": { tabHome: "홈", installText: "이 안내를 휴대폰 홈 화면에 저장해 두세요", installBtn: "저장하기", installTitle: "홈 화면에 저장하기",
+    "ko": { installLink: "홈 화면에 저장하는 법", tabHome: "홈", installText: "이 안내를 휴대폰 홈 화면에 저장해 두세요", installBtn: "저장하기", installTitle: "홈 화면에 저장하기",
       iosSteps: ["Safari 아래쪽의 공유 버튼(네모 위 화살표)을 누릅니다.", "목록을 내려 [홈 화면에 추가]를 누릅니다.", "오른쪽 위 [추가]를 누르면 끝입니다."],
       iosOther: "주소창 옆 공유 버튼(네모 위 화살표)을 누른 뒤 [홈 화면에 추가]를 눌러 주세요. 그 메뉴가 없으면 아래 [주소 복사]를 눌러 Safari에서 열어 주세요.",
       androidSteps: ["Chrome 오른쪽 위 점 세 개(⋮)를 누릅니다.", "[홈 화면에 추가] 또는 [앱 설치]를 누릅니다.", "[설치] 또는 [추가]를 누르면 끝입니다."],
-      samsungSteps: ["삼성 인터넷 아래쪽 메뉴(☰)를 누릅니다.", "[현재 페이지 추가] → [홈 화면]을 누릅니다.", "[추가]를 누르면 끝입니다."],
+      samsungSteps: ["삼성 인터넷 오른쪽 아래 메뉴(⋮ 또는 ☰)를 누릅니다.", "[현재 페이지 추가] → [홈 화면]을 누릅니다.", "[추가]를 누르면 끝입니다."],
       inAppNote: "지금은 카카오톡 같은 앱 안에서 열려 있어서 저장이 안 돼요. 아래 버튼으로 브라우저에서 연 다음 다시 [저장하기]를 눌러 주세요.",
       openBrowser: "브라우저에서 열기", copyLink: "주소 복사", linkCopied: "주소를 복사했습니다. 브라우저 주소창에 붙여 넣어 주세요.",
       offlineNote: "저장해 두면 인터넷이 없어도 열려요.",
       close: "닫기", today: "오늘" },
-    "en": { tabHome: "Home", installText: "Save this guide to your home screen", installBtn: "Save", installTitle: "Add to Home Screen",
+    "en": { installLink: "How to save to home screen", tabHome: "Home", installText: "Save this guide to your home screen", installBtn: "Save", installTitle: "Add to Home Screen",
       iosSteps: ["Tap the Share button (square with an arrow) at the bottom of Safari.", "Scroll down and tap [Add to Home Screen].", "Tap [Add] in the top right."],
       iosOther: "Tap the Share button (square with an arrow) next to the address bar, then tap [Add to Home Screen]. If you don't see it, tap [Copy link] below and open it in Safari.",
       androidSteps: ["Tap the three dots (⋮) at the top right of Chrome.", "Tap [Add to Home screen] or [Install app].", "Tap [Install] or [Add]."],
-      samsungSteps: ["Tap the menu (☰) at the bottom of Samsung Internet.", "Tap [Add page to] → [Home screen].", "Tap [Add]."],
+      samsungSteps: ["Tap the menu (⋮ or ☰) at the bottom right of Samsung Internet.", "Tap [Add page to] → [Home screen].", "Tap [Add]."],
       inAppNote: "This page is open inside another app, so it can't be saved here. Open it in your browser with the button below, then tap [Save] again.",
       openBrowser: "Open in browser", copyLink: "Copy link", linkCopied: "Link copied. Paste it into your browser.",
       offlineNote: "Once saved, it opens even without internet.",
       close: "Close", today: "Today" },
-    "ja": { tabHome: "ホーム", installText: "このガイドをホーム画面に保存しておきましょう", installBtn: "保存", installTitle: "ホーム画面に追加",
+    "ja": { installLink: "ホーム画面に保存する方法", tabHome: "ホーム", installText: "このガイドをホーム画面に保存しておきましょう", installBtn: "保存", installTitle: "ホーム画面に追加",
       iosSteps: ["Safari下の共有ボタン（四角に矢印）を押します。", "下にスクロールして[ホーム画面に追加]を押します。", "右上の[追加]を押して完了です。"],
       iosOther: "アドレスバー横の共有ボタン（四角に矢印）を押し、[ホーム画面に追加]を押してください。見つからない場合は下の[リンクをコピー]を押してSafariで開いてください。",
       androidSteps: ["Chrome右上の点が三つ（⋮）のボタンを押します。", "[ホーム画面に追加]または[アプリをインストール]を押します。", "[インストール]または[追加]を押して完了です。"],
-      samsungSteps: ["Samsung Internet下のメニュー（☰）を押します。", "[ページを追加] → [ホーム画面]を押します。", "[追加]を押して完了です。"],
+      samsungSteps: ["Samsung Internet右下のメニュー（⋮ または ☰）を押します。", "[ページを追加] → [ホーム画面]を押します。", "[追加]を押して完了です。"],
       inAppNote: "いまは他のアプリの中で開いているため保存できません。下のボタンでブラウザで開いてから、もう一度[保存]を押してください。",
       openBrowser: "ブラウザで開く", copyLink: "リンクをコピー", linkCopied: "リンクをコピーしました。ブラウザのアドレス欄に貼り付けてください。",
       offlineNote: "保存するとインターネットがなくても開けます。",
       close: "閉じる", today: "今日" },
-    "zh-CN": { tabHome: "首页", installText: "将本指南保存到手机主屏幕", installBtn: "保存", installTitle: "添加到主屏幕",
+    "zh-CN": { installLink: "如何保存到主屏幕", tabHome: "首页", installText: "将本指南保存到手机主屏幕", installBtn: "保存", installTitle: "添加到主屏幕",
       iosSteps: ["点按 Safari 底部的分享按钮（方框加箭头）。", "向下滑动，点按[添加到主屏幕]。", "点按右上角的[添加]即可。"],
       iosOther: "请点按地址栏旁的分享按钮（方框加箭头），再点按[添加到主屏幕]。如果没有这个选项，请点按下方[复制链接]，在 Safari 中打开。",
       androidSteps: ["点按 Chrome 右上角的三个点（⋮）。", "点按[添加到主屏幕]或[安装应用]。", "点按[安装]或[添加]即可。"],
-      samsungSteps: ["点按三星浏览器底部的菜单（☰）。", "点按[添加页面至] → [主屏幕]。", "点按[添加]即可。"],
+      samsungSteps: ["点按三星浏览器右下角的菜单（⋮ 或 ☰）。", "点按[添加页面至] → [主屏幕]。", "点按[添加]即可。"],
       inAppNote: "当前在其他 App 内打开，无法保存。请用下方按钮在浏览器中打开，然后再点一次[保存]。",
       openBrowser: "在浏览器中打开", copyLink: "复制链接", linkCopied: "已复制链接，请粘贴到浏览器地址栏。",
       offlineNote: "保存后没有网络也能打开。",
       close: "关闭", today: "今天" },
-    "zh-TW": { tabHome: "首頁", installText: "將本指南儲存到手機主畫面", installBtn: "儲存", installTitle: "加入主畫面",
+    "zh-TW": { installLink: "如何儲存到主畫面", tabHome: "首頁", installText: "將本指南儲存到手機主畫面", installBtn: "儲存", installTitle: "加入主畫面",
       iosSteps: ["點一下 Safari 下方的分享按鈕（方框加箭頭）。", "往下滑，點一下[加入主畫面]。", "點一下右上角的[新增]即可。"],
       iosOther: "請點一下網址列旁的分享按鈕（方框加箭頭），再點一下[加入主畫面]。如果沒有這個選項，請點一下下方[複製連結]，在 Safari 中開啟。",
       androidSteps: ["點一下 Chrome 右上角的三個點（⋮）。", "點一下[加到主畫面]或[安裝應用程式]。", "點一下[安裝]或[新增]即可。"],
-      samsungSteps: ["點一下三星網際網路下方的選單（☰）。", "點一下[新增頁面至] → [主螢幕]。", "點一下[新增]即可。"],
+      samsungSteps: ["點一下三星網際網路右下角的選單（⋮ 或 ☰）。", "點一下[新增頁面至] → [主螢幕]。", "點一下[新增]即可。"],
       inAppNote: "目前是在其他 App 內開啟，無法儲存。請用下方按鈕在瀏覽器中開啟，再點一次[儲存]。",
       openBrowser: "在瀏覽器中開啟", copyLink: "複製連結", linkCopied: "已複製連結，請貼到瀏覽器網址列。",
       offlineNote: "儲存後沒有網路也能開啟。",
@@ -5085,7 +5091,10 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     });
 
     var footer = el("p", { cls: "footer" }, [el("b", { text: C.stayName || "" }), C.address || ""]);
-    return [hero, heroText, today, installBanner()].concat(groups, [footer]);
+    var saveLink = isStandalone() ? null : el("p", { cls: "install-link" }, [
+      el("button", { type: "button", text: X("installLink"), onclick: startInstall })
+    ]);
+    return [hero, heroText, today, installBanner()].concat(groups, [footer, saveLink]);
   }
 
   /* ---------- 체크인 ---------- */

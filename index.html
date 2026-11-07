@@ -1285,7 +1285,7 @@ const CONFIG = {
               "title": "How to use the LG TROMM washer-dryer",
               "images": [
                 {
-                  "src": "img/guide/washer-en.jpg",
+                  "lsrc": "img/guide/washer-en.jpg",
                   "alt": "LG TROMM washer-dryer guide",
                   "wide": true
                 }
@@ -2156,7 +2156,7 @@ const CONFIG = {
               "title": "LG トロム ドラム洗濯乾燥機の使い方",
               "images": [
                 {
-                  "src": "img/guide/washer-ja.jpg",
+                  "lsrc": "img/guide/washer-ja.jpg",
                   "alt": "LG トロム洗濯乾燥機の使い方",
                   "wide": true
                 }
@@ -3027,7 +3027,7 @@ const CONFIG = {
               "title": "LG TROMM 滚筒洗烘一体机使用方法",
               "images": [
                 {
-                  "src": "img/guide/washer-zhCN.jpg",
+                  "lsrc": "img/guide/washer-zhCN.jpg",
                   "alt": "LG TROMM 洗烘一体机使用说明",
                   "wide": true
                 }
@@ -3898,7 +3898,7 @@ const CONFIG = {
               "title": "LG TROMM 滾筒洗脫烘洗衣機使用方法",
               "images": [
                 {
-                  "src": "img/guide/washer-zhTW.jpg",
+                  "lsrc": "img/guide/washer-zhTW.jpg",
                   "alt": "LG TROMM 洗脫烘洗衣機使用說明",
                   "wide": true
                 }
@@ -5105,6 +5105,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   /* ---------- 언어 ---------- */
   function isObj(o) { return o && typeof o === "object" && !Array.isArray(o); }
   var KEEP = { src: 1, url: 1, wide: 1, id: 1, items: 0 };
+  /* 언어마다 다른 사진을 쓰려면 번역 쪽에 lsrc 를 적습니다 */
   /* 외국어 글자를 한국어 내용 위에 덮어씁니다. 사진과 링크 주소는 한국어 쪽 것을 씁니다 */
   function merge(base, over) {
     if (over === undefined || over === null) return base;
@@ -5308,8 +5309,8 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       if (run.length % 2) span[run[run.length - 1]] = true;
       imgs.forEach(function (im, i) {
         var b = el("button", { type: "button", cls: imgs.length === 1 ? "only" : (span[i] ? "wide" : null),
-          onclick: function () { openViewer(im.src, im.alt); } }, [
-          el("img", { src: im.src, alt: im.alt || "", loading: "lazy" })
+          onclick: function () { openViewer(im.lsrc || im.src, im.alt); } }, [
+          el("img", { src: im.lsrc || im.src, alt: im.alt || "", loading: "lazy" })
         ]);
         g.appendChild(b);
       });

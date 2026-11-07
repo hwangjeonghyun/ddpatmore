@@ -191,7 +191,8 @@ const CONFIG = {
         "notice",
         "food",
         "nearby",
-        "tips"
+        "tips",
+        "experiences"
       ]
     },
     {
@@ -4977,6 +4978,24 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
 .home-search .hs-ex { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--faint); font-size: 15px; }
 .search-empty { padding: 20px 4px; color: var(--sub); }
 .search-empty p { margin: 0 0 14px; }
+/* 서울 인기 체험 10선 */
+.exp-card { padding: 16px; }
+.exp-head { display: flex; align-items: flex-start; gap: 12px; }
+.exp-icon { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFFFFF; }
+.exp-icon svg { width: 24px; height: 24px; }
+.exp-title { flex: 1 1 auto; min-width: 0; }
+.exp-cat { display: inline-block; font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 12px; background: var(--soft); color: var(--sub); }
+.card-title.exp-name { margin: 4px 0 0; }
+.exp-text { font-size: 16px; line-height: 1.6; margin: 12px 0 0; }
+.exp-meta { display: flex; align-items: center; gap: 6px; font-size: 16px; margin: 10px 0 0; color: var(--sub); }
+.exp-meta b { color: var(--text); font-weight: 700; }
+.exp-meta svg { width: 18px; height: 18px; color: #C9962E; display: block; }
+.exp-note { margin: 12px 0 0; padding: 10px 12px; border-radius: var(--btn); background: var(--page); font-size: 16px; line-height: 1.55; }
+.exp-note b { color: var(--accent); margin-right: 6px; }
+.btn.exp-btn { margin-top: 14px; }
+.exp-foot { margin: 20px 0 0; padding: 16px; border-radius: var(--card); background: var(--soft); color: var(--sub); font-size: 14px; line-height: 1.7; }
+.exp-foot p { margin: 0; }
+.exp-empty { color: var(--sub); text-align: center; padding: 24px 0; }
 .hide { display: none !important; }
 </style>
 </head>
@@ -5156,6 +5175,17 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + "</svg>";
   }
   var ICONS = {
+    x_ticket: '<path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M14 8v1.5M14 11.25v1.5M14 14.5V16"/>',
+    x_food: '<path d="M7 3v8M5 3v4a2 2 0 0 0 4 0V3M7 11v10"/><path d="M17 3c-1.7 1.2-2.5 3-2.5 6h2.5v12"/>',
+    x_cook: '<path d="M4 10h16v3a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z"/><path d="M2.5 10h19"/><path d="M9 7c0-1 1-1.2 1-2.5M14 7c0-1 1-1.2 1-2.5"/>',
+    x_gate: '<path d="M3 21h18"/><path d="M5 21V10M19 21V10"/><path d="M2.5 10.5L12 4l9.5 6.5"/><path d="M9.5 21v-5.5h5V21"/>',
+    x_camera: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/>',
+    x_bottle: '<rect x="6" y="9" width="12" height="12" rx="3"/><path d="M10 9V6h4v3"/><path d="M8.5 3.5h7"/>',
+    x_ball: '<circle cx="12" cy="12" r="9"/><path d="M7.5 4.3c1.8 2.3 1.8 13.1 0 15.4M16.5 4.3c-1.8 2.3-1.8 13.1 0 15.4"/>',
+    x_mountain: '<path d="M2.5 20l6.5-11.5 4 6.5 2.5-3.5 6 8.5z"/><circle cx="17" cy="5.5" r="1.6"/>',
+    x_moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+    x_star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+    experiences: '<path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4z"/><path d="M14 8v1.5M14 11.25v1.5M14 14.5V16"/>',
     home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
     checkin: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9"/><path d="M17 6l3 3"/><path d="M15 8l2 2"/>',
     parking: '<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 17V7h3.5a3 3 0 0 1 0 6H10"/>',
@@ -5182,7 +5212,8 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     checkin: function () { return { title: T("menuCheckin"), sub: T("descCheckin") }; },
     wifi: function () { return { title: T("menuWifi"), sub: T("descWifi") }; },
     contact: function () { return { title: T("menuContact"), sub: T("descContact") }; },
-    uber: function () { return BASE.showUber === false ? null : { title: T("menuUber"), sub: T("descUber") }; }
+    uber: function () { return BASE.showUber === false ? null : { title: T("menuUber"), sub: T("descUber") }; },
+    experiences: function () { return { title: EXT().menu, sub: EXT().sub }; }
   };
   function pageById(id) { return arr(C.pages).filter(function (p) { return p.id === id; })[0]; }
   function entry(id) {
@@ -5786,6 +5817,508 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     return nav;
   }
 
+  /* ---------- 서울 인기 체험 10선 ----------
+     평점·후기 수 확인일: 2026-10-31. 번호는 표시 순서이며 에어비앤비 공식 순위가 아닙니다.
+     cat: food 먹거리, cook 요리, culture 문화·산책, photo 문화·사진, craft 공방, sports 스포츠, nature 자연·야외, night 나이트라이프 */
+  var EXP = [{"id": "gwangjang", "cat": "food", "rating": 4.96, "reviews": 5176, "url": "https://www.airbnb.com/experiences/405465"}, {"id": "pubcrawl", "cat": "night", "rating": 4.82, "reviews": 2382, "url": "https://www.airbnb.com/experiences/161886"}, {"id": "nightwall", "cat": "culture", "rating": 4.95, "reviews": 2247, "url": "https://www.airbnb.com/experiences/1143839"}, {"id": "perfume", "cat": "craft", "rating": 4.95, "reviews": 1426, "url": "https://www.airbnb.com/experiences/1469132"}, {"id": "bbq", "cat": "food", "rating": 4.9, "reviews": 1208, "url": "https://www.airbnb.com/experiences/4837890"}, {"id": "baseball", "cat": "sports", "rating": 4.89, "reviews": 829, "url": "https://www.airbnb.com/experiences/4217908"}, {"id": "hanbok", "cat": "photo", "rating": 4.99, "reviews": 569, "url": "https://www.airbnb.com/experiences/5847008"}, {"id": "kimchi", "cat": "cook", "rating": 5, "reviews": 406, "url": "https://www.airbnb.com/experiences/5724663"}, {"id": "royal", "cat": "cook", "rating": 5, "reviews": 264, "url": "https://www.airbnb.com/experiences/5578128"}, {"id": "bukhansan", "cat": "nature", "rating": 4.98, "reviews": 228, "url": "https://www.airbnb.com/experiences/3917857"}];
+  var EXP_FILTERS = ["all", "foodcook", "culture", "craft", "sports", "nature", "night"];
+  var EXP_CATS = {
+    food: { icon: "x_food", color: "var(--accent)", filter: "foodcook" },
+    cook: { icon: "x_cook", color: "var(--accent)", filter: "foodcook" },
+    culture: { icon: "x_gate", color: "#6E7B5F", filter: "culture" },
+    photo: { icon: "x_camera", color: "#6E7B5F", filter: "culture" },
+    craft: { icon: "x_bottle", color: "#8C6B4E", filter: "craft" },
+    sports: { icon: "x_ball", color: "#5C6B78", filter: "sports" },
+    nature: { icon: "x_mountain", color: "#4F6B57", filter: "nature" },
+    night: { icon: "x_moon", color: "var(--dark)", filter: "night" }
+  };
+  var EXP_TEXT = {
+    "ko": {
+      "intro": "서울 여행에서 해 보기 좋은 에어비앤비 체험을 골랐습니다.",
+      "filters": {
+        "all": "전체",
+        "foodcook": "먹거리·요리",
+        "culture": "문화·산책",
+        "craft": "공방",
+        "sports": "스포츠",
+        "nature": "자연·야외",
+        "night": "나이트라이프"
+      },
+      "cats": {
+        "food": "먹거리",
+        "cook": "요리",
+        "culture": "문화·산책",
+        "photo": "문화·사진",
+        "craft": "공방",
+        "sports": "스포츠",
+        "nature": "자연·야외",
+        "night": "나이트라이프"
+      },
+      "reviews": "후기 {n}건",
+      "rating": "평점",
+      "note": "주의",
+      "button": "에어비앤비에서 보기",
+      "footer": [
+        "서울 여행을 위한 추천 체험 모음입니다.",
+        "에어비앤비 공식 순위가 아닙니다.",
+        "평점·후기 수는 2026년 10월 31일 확인 기준입니다.",
+        "최신 가격·일정·참여 조건은 각 체험 페이지에서 확인하세요.",
+        "예약과 결제는 에어비앤비에서 진행됩니다."
+      ],
+      "items": {
+        "gwangjang": {
+          "name": "광장시장 먹거리 투어",
+          "intro": "현지 가이드와 광장시장을 둘러보며 한국 음식과 시장 문화를 경험해보세요.",
+          "note": ""
+        },
+        "pubcrawl": {
+          "name": "서울 펍 크롤",
+          "intro": "홍대 또는 이태원의 바와 클럽을 함께 방문하며 다른 여행자들과 교류하는 체험입니다.",
+          "note": "19세 이상 참여 가능. 신분증과 날짜별 집결 장소를 확인하세요."
+        },
+        "nightwall": {
+          "name": "서울 야간 골목·성곽 산책",
+          "intro": "혜화와 이화동을 지나 낙산공원과 한양도성의 야경을 즐기는 가이드 산책입니다.",
+          "note": "오르막과 걷는 구간이 있습니다."
+        },
+        "perfume": {
+          "name": "한옥에서 나만의 향수 만들기",
+          "intro": "종로의 한옥에서 조향사와 향을 조합하고 나만의 향수를 만들어보세요.",
+          "note": ""
+        },
+        "bbq": {
+          "name": "현지 호스트와 한국 바비큐",
+          "intro": "호스트가 고른 중구의 돼지고기 바비큐 식당에서 식사하며 한국의 식문화를 알아보세요.",
+          "note": "식당과 정확한 집결 장소는 예약 후 안내를 확인하세요."
+        },
+        "baseball": {
+          "name": "잠실 야구 관람과 식사",
+          "intro": "식사와 함께 잠실 야구장에서 한국 프로야구의 응원 문화를 경험해보세요.",
+          "note": "경기 일정과 시즌에 따라 참여 가능 여부가 달라집니다."
+        },
+        "hanbok": {
+          "name": "경복궁 한복 촬영·역사 산책",
+          "intro": "한복을 입고 역사 가이드·사진가와 경복궁을 걸으며 여행 사진을 남겨보세요.",
+          "note": ""
+        },
+        "kimchi": {
+          "name": "현지 가정에서 김치 만들기",
+          "intro": "김치를 직접 만들고 한국식 식사를 즐기며 김치의 발효와 보관 방법을 배워보세요.",
+          "note": "식이 제한과 알레르기는 예약 전에 호스트에게 확인하세요."
+        },
+        "royal": {
+          "name": "한옥에서 궁중요리 배우기",
+          "intro": "인사동 인근 한옥에서 갈비 등 전통 요리를 만들고 직접 차린 식사를 즐겨보세요.",
+          "note": "식이 제한과 알레르기는 예약 전에 호스트에게 확인하세요."
+        },
+        "bukhansan": {
+          "name": "북한산 정상 등산",
+          "intro": "가이드와 북한산 정상 코스를 오르며 서울의 산과 풍경을 경험해보세요.",
+          "note": "체력·날씨·등산화 등 준비물을 확인하세요. 가벼운 도심 산책과는 다릅니다."
+        }
+      },
+      "menu": "서울 인기 체험 10선",
+      "sub": "먹거리 · 문화 · 공방 · 야외"
+    },
+    "en": {
+      "intro": "Airbnb experiences worth trying on your trip to Seoul.",
+      "filters": {
+        "all": "All",
+        "foodcook": "Food & Cooking",
+        "culture": "Culture & Walks",
+        "craft": "Workshops",
+        "sports": "Sports",
+        "nature": "Nature & Outdoors",
+        "night": "Nightlife"
+      },
+      "cats": {
+        "food": "Food",
+        "cook": "Cooking",
+        "culture": "Culture & Walks",
+        "photo": "Culture & Photos",
+        "craft": "Workshop",
+        "sports": "Sports",
+        "nature": "Nature & Outdoors",
+        "night": "Nightlife"
+      },
+      "reviews": "{n} reviews",
+      "rating": "Rating",
+      "note": "Note",
+      "button": "View on Airbnb",
+      "footer": [
+        "A collection of recommended experiences for your trip to Seoul.",
+        "This is not an official Airbnb ranking.",
+        "Ratings and review counts are as checked on October 31, 2026.",
+        "Check each experience page for the latest prices, schedules and requirements.",
+        "Booking and payment are made on Airbnb."
+      ],
+      "items": {
+        "gwangjang": {
+          "name": "Gwangjang Market Food Tour",
+          "intro": "Explore Gwangjang Market with a local guide and experience Korean food and market culture.",
+          "note": ""
+        },
+        "pubcrawl": {
+          "name": "Seoul Pub Crawl",
+          "intro": "Visit bars and clubs in Hongdae or Itaewon together and meet other travelers.",
+          "note": "Ages 19 and up. Check your ID and the meeting point for your date."
+        },
+        "nightwall": {
+          "name": "Seoul Night Alleys & City Wall Walk",
+          "intro": "A guided walk through Hyehwa and Ihwa-dong to enjoy night views of Naksan Park and the Seoul City Wall.",
+          "note": "Includes uphill sections and walking."
+        },
+        "perfume": {
+          "name": "Make Your Own Perfume in a Hanok",
+          "intro": "Blend scents with a perfumer in a hanok in Jongno and make your own perfume.",
+          "note": ""
+        },
+        "bbq": {
+          "name": "Korean BBQ with a Local Host",
+          "intro": "Eat at a pork BBQ restaurant in Jung-gu chosen by the host and learn about Korean food culture.",
+          "note": "Check the restaurant and exact meeting point in the details you receive after booking."
+        },
+        "baseball": {
+          "name": "Jamsil Baseball Game & Meal",
+          "intro": "Enjoy a meal and experience Korean pro baseball's cheering culture at Jamsil Baseball Stadium.",
+          "note": "Availability depends on the game schedule and season."
+        },
+        "hanbok": {
+          "name": "Gyeongbokgung Hanbok Photos & History Walk",
+          "intro": "Wear hanbok and walk Gyeongbokgung with a history guide and photographer to capture travel photos.",
+          "note": ""
+        },
+        "kimchi": {
+          "name": "Make Kimchi in a Local Home",
+          "intro": "Make kimchi yourself, enjoy a Korean-style meal, and learn how kimchi is fermented and stored.",
+          "note": "Check dietary restrictions and allergies with the host before booking."
+        },
+        "royal": {
+          "name": "Learn Royal Court Cuisine in a Hanok",
+          "intro": "Cook traditional dishes such as galbi in a hanok near Insadong and enjoy the meal you prepared.",
+          "note": "Check dietary restrictions and allergies with the host before booking."
+        },
+        "bukhansan": {
+          "name": "Bukhansan Summit Hike",
+          "intro": "Climb the Bukhansan summit trail with a guide and experience Seoul's mountains and scenery.",
+          "note": "Check your fitness, the weather, and gear such as hiking shoes. This is not a light city walk."
+        }
+      },
+      "menu": "Top 10 Seoul Experiences",
+      "sub": "Food · Culture · Workshops · Outdoors"
+    },
+    "ja": {
+      "intro": "ソウル旅行で体験したいAirbnbの体験を選びました。",
+      "filters": {
+        "all": "すべて",
+        "foodcook": "グルメ・料理",
+        "culture": "文化・散策",
+        "craft": "工房",
+        "sports": "スポーツ",
+        "nature": "自然・アウトドア",
+        "night": "ナイトライフ"
+      },
+      "cats": {
+        "food": "グルメ",
+        "cook": "料理",
+        "culture": "文化・散策",
+        "photo": "文化・写真",
+        "craft": "工房",
+        "sports": "スポーツ",
+        "nature": "自然・アウトドア",
+        "night": "ナイトライフ"
+      },
+      "reviews": "レビュー{n}件",
+      "rating": "評価",
+      "note": "ご注意",
+      "button": "Airbnbで見る",
+      "footer": [
+        "ソウル旅行のためのおすすめ体験をまとめました。",
+        "Airbnbの公式ランキングではありません。",
+        "評価・レビュー数は2026年10月31日に確認したものです。",
+        "最新の料金・日程・参加条件は各体験ページでご確認ください。",
+        "予約と支払いはAirbnbで行います。"
+      ],
+      "items": {
+        "gwangjang": {
+          "name": "広蔵市場グルメツアー",
+          "intro": "地元ガイドと広蔵市場を巡り、韓国の食と市場文化を体験しましょう。",
+          "note": ""
+        },
+        "pubcrawl": {
+          "name": "ソウル・パブクロール",
+          "intro": "弘大または梨泰院のバーやクラブを一緒に巡り、ほかの旅行者と交流する体験です。",
+          "note": "19歳以上のみ参加できます。身分証と日付ごとの集合場所をご確認ください。"
+        },
+        "nightwall": {
+          "name": "ソウル夜の路地・城郭散策",
+          "intro": "恵化と梨花洞を抜け、駱山公園と漢陽都城の夜景を楽しむガイド付き散策です。",
+          "note": "上り坂や歩く区間があります。"
+        },
+        "perfume": {
+          "name": "韓屋で自分だけの香水づくり",
+          "intro": "鍾路の韓屋で調香師と香りを調合し、自分だけの香水を作りましょう。",
+          "note": ""
+        },
+        "bbq": {
+          "name": "地元ホストと韓国焼肉",
+          "intro": "ホストが選んだ中区の豚焼肉店で食事をしながら、韓国の食文化を知りましょう。",
+          "note": "お店と正確な集合場所は、予約後の案内でご確認ください。"
+        },
+        "baseball": {
+          "name": "蚕室で野球観戦と食事",
+          "intro": "食事とともに、蚕室野球場で韓国プロ野球の応援文化を体験しましょう。",
+          "note": "試合日程とシーズンによって参加できるかどうかが変わります。"
+        },
+        "hanbok": {
+          "name": "景福宮で韓服撮影・歴史散策",
+          "intro": "韓服を着て、歴史ガイド・フォトグラファーと景福宮を歩き、旅の写真を残しましょう。",
+          "note": ""
+        },
+        "kimchi": {
+          "name": "地元の家庭でキムチづくり",
+          "intro": "キムチを自分で作り、韓国式の食事を楽しみながら、キムチの発酵と保存方法を学びましょう。",
+          "note": "食事制限やアレルギーは、予約前にホストにご確認ください。"
+        },
+        "royal": {
+          "name": "韓屋で宮廷料理を学ぶ",
+          "intro": "仁寺洞近くの韓屋でカルビなどの伝統料理を作り、自分で用意した食事を楽しみましょう。",
+          "note": "食事制限やアレルギーは、予約前にホストにご確認ください。"
+        },
+        "bukhansan": {
+          "name": "北漢山 山頂登山",
+          "intro": "ガイドと北漢山の山頂コースを登り、ソウルの山と景色を体験しましょう。",
+          "note": "体力・天気・登山靴などの準備をご確認ください。気軽な街歩きとは異なります。"
+        }
+      },
+      "menu": "ソウル人気体験10選",
+      "sub": "グルメ · 文化 · 工房 · アウトドア"
+    },
+    "zh-CN": {
+      "intro": "为首尔旅行挑选了值得一试的 Airbnb 体验。",
+      "filters": {
+        "all": "全部",
+        "foodcook": "美食·烹饪",
+        "culture": "文化·散步",
+        "craft": "工作坊",
+        "sports": "运动",
+        "nature": "自然·户外",
+        "night": "夜生活"
+      },
+      "cats": {
+        "food": "美食",
+        "cook": "烹饪",
+        "culture": "文化·散步",
+        "photo": "文化·摄影",
+        "craft": "工作坊",
+        "sports": "运动",
+        "nature": "自然·户外",
+        "night": "夜生活"
+      },
+      "reviews": "{n} 条评价",
+      "rating": "评分",
+      "note": "注意",
+      "button": "在 Airbnb 查看",
+      "footer": [
+        "为首尔旅行整理的推荐体验。",
+        "这不是 Airbnb 官方排名。",
+        "评分和评价数以 2026年10月31日确认的数据为准。",
+        "最新价格、日程和参加条件请到各体验页面确认。",
+        "预订和付款均在 Airbnb 进行。"
+      ],
+      "items": {
+        "gwangjang": {
+          "name": "广藏市场美食之旅",
+          "intro": "跟着当地导游逛广藏市场，体验韩国美食与市场文化。",
+          "note": ""
+        },
+        "pubcrawl": {
+          "name": "首尔酒吧巡游",
+          "intro": "一起走访弘大或梨泰院的酒吧和夜店，与其他旅行者交流的体验。",
+          "note": "仅限19岁以上参加。请确认身份证件和各日期的集合地点。"
+        },
+        "nightwall": {
+          "name": "首尔夜间小巷·城郭散步",
+          "intro": "穿过惠化和梨花洞，欣赏骆山公园与汉阳都城夜景的导览散步。",
+          "note": "有上坡和步行路段。"
+        },
+        "perfume": {
+          "name": "在韩屋调制专属香水",
+          "intro": "在钟路的韩屋与调香师一起调配香味，做出专属于你的香水。",
+          "note": ""
+        },
+        "bbq": {
+          "name": "与当地主人一起吃韩式烤肉",
+          "intro": "在主人挑选的中区猪肉烤肉店用餐，了解韩国饮食文化。",
+          "note": "餐厅和确切集合地点请在预订后查看通知。"
+        },
+        "baseball": {
+          "name": "蚕室棒球观赛与用餐",
+          "intro": "边用餐边在蚕室棒球场体验韩国职业棒球的应援文化。",
+          "note": "能否参加取决于比赛日程和赛季。"
+        },
+        "hanbok": {
+          "name": "景福宫韩服摄影·历史散步",
+          "intro": "穿上韩服，与历史导游·摄影师一起漫步景福宫，留下旅行照片。",
+          "note": ""
+        },
+        "kimchi": {
+          "name": "在当地家庭做泡菜",
+          "intro": "亲手做泡菜、享用韩式餐食，学习泡菜的发酵和保存方法。",
+          "note": "饮食限制和过敏问题请在预订前向主人确认。"
+        },
+        "royal": {
+          "name": "在韩屋学宫廷料理",
+          "intro": "在仁寺洞附近的韩屋制作排骨等传统料理，享用亲手准备的餐食。",
+          "note": "饮食限制和过敏问题请在预订前向主人确认。"
+        },
+        "bukhansan": {
+          "name": "北汉山登顶徒步",
+          "intro": "跟着导游走北汉山登顶路线，体验首尔的山和风景。",
+          "note": "请确认体力、天气及登山鞋等装备。与轻松的市区散步不同。"
+        }
+      },
+      "menu": "首尔人气体验10选",
+      "sub": "美食 · 文化 · 工作坊 · 户外"
+    },
+    "zh-TW": {
+      "intro": "為首爾旅行挑選了值得一試的 Airbnb 體驗。",
+      "filters": {
+        "all": "全部",
+        "foodcook": "美食·料理",
+        "culture": "文化·散步",
+        "craft": "工作坊",
+        "sports": "運動",
+        "nature": "自然·戶外",
+        "night": "夜生活"
+      },
+      "cats": {
+        "food": "美食",
+        "cook": "料理",
+        "culture": "文化·散步",
+        "photo": "文化·攝影",
+        "craft": "工作坊",
+        "sports": "運動",
+        "nature": "自然·戶外",
+        "night": "夜生活"
+      },
+      "reviews": "{n} 則評價",
+      "rating": "評分",
+      "note": "注意",
+      "button": "在 Airbnb 查看",
+      "footer": [
+        "為首爾旅行整理的推薦體驗。",
+        "這不是 Airbnb 官方排名。",
+        "評分與評價數以 2026年10月31日確認的資料為準。",
+        "最新價格、日程與參加條件請至各體驗頁面確認。",
+        "預訂與付款皆在 Airbnb 進行。"
+      ],
+      "items": {
+        "gwangjang": {
+          "name": "廣藏市場美食之旅",
+          "intro": "跟著在地導遊逛廣藏市場，體驗韓國美食與市場文化。",
+          "note": ""
+        },
+        "pubcrawl": {
+          "name": "首爾酒吧巡禮",
+          "intro": "一起走訪弘大或梨泰院的酒吧與夜店，和其他旅客交流的體驗。",
+          "note": "限19歲以上參加。請確認身分證件與各日期的集合地點。"
+        },
+        "nightwall": {
+          "name": "首爾夜間巷弄·城郭散步",
+          "intro": "穿過惠化與梨花洞，欣賞駱山公園與漢陽都城夜景的導覽散步。",
+          "note": "有上坡與步行路段。"
+        },
+        "perfume": {
+          "name": "在韓屋調製專屬香水",
+          "intro": "在鍾路的韓屋與調香師一起調配香味，做出專屬於你的香水。",
+          "note": ""
+        },
+        "bbq": {
+          "name": "與在地主人一起吃韓式烤肉",
+          "intro": "在主人挑選的中區豬肉烤肉店用餐，認識韓國飲食文化。",
+          "note": "餐廳與確切集合地點請於預訂後查看通知。"
+        },
+        "baseball": {
+          "name": "蠶室棒球觀賽與用餐",
+          "intro": "邊用餐邊在蠶室棒球場體驗韓國職棒的應援文化。",
+          "note": "能否參加依比賽日程與球季而定。"
+        },
+        "hanbok": {
+          "name": "景福宮韓服攝影·歷史散步",
+          "intro": "穿上韓服，與歷史導遊·攝影師一起漫步景福宮，留下旅行照片。",
+          "note": ""
+        },
+        "kimchi": {
+          "name": "在當地家庭做泡菜",
+          "intro": "親手做泡菜、享用韓式餐點，學習泡菜的發酵與保存方法。",
+          "note": "飲食限制與過敏問題請於預訂前向主人確認。"
+        },
+        "royal": {
+          "name": "在韓屋學宮廷料理",
+          "intro": "在仁寺洞附近的韓屋製作排骨等傳統料理，享用親手準備的餐點。",
+          "note": "飲食限制與過敏問題請於預訂前向主人確認。"
+        },
+        "bukhansan": {
+          "name": "北漢山登頂健行",
+          "intro": "跟著導遊走北漢山登頂路線，體驗首爾的山與風景。",
+          "note": "請確認體力、天氣及登山鞋等裝備。與輕鬆的市區散步不同。"
+        }
+      },
+      "menu": "首爾人氣體驗10選",
+      "sub": "美食 · 文化 · 工作坊 · 戶外"
+    }
+  };
+  function EXT() { return EXP_TEXT[LANG] || EXP_TEXT.en; }
+  var expFilter = "all";
+  function viewExperiences() {
+    var X = EXT(), items = X.items || {};
+    var out = pageHead(X.menu, null);
+    if (X.intro) out.push(el("p", { cls: "intro", text: X.intro }));
+    var list = el("div");
+    var chips = el("div", { cls: "chips" });
+    EXP_FILTERS.forEach(function (f) {
+      var b = el("button", { cls: "chip" + (f === expFilter ? " on" : ""), type: "button", "aria-pressed": f === expFilter ? "true" : "false",
+        text: (X.filters || {})[f] || f, onclick: function () {
+          expFilter = f;
+          Array.prototype.slice.call(chips.children).forEach(function (c) { var on = c === b; c.classList.toggle("on", on); c.setAttribute("aria-pressed", on ? "true" : "false"); });
+          draw();
+        } });
+      chips.appendChild(b);
+    });
+    function num(n) { try { return Number(n).toLocaleString("en-US"); } catch (e) { return String(n); } }
+    function card(e, i) {
+      var tx = items[e.id] || {}, cat = EXP_CATS[e.cat] || EXP_CATS.culture;
+      var ic = el("span", { cls: "exp-icon", "aria-hidden": "true" }); ic.style.background = cat.color; ic.innerHTML = icon(cat.icon);
+      var star = el("span"); star.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' + ICONS.x_star + '</svg>';
+      return el("article", { cls: "card exp-card", "data-i": i }, [
+        el("div", { cls: "exp-head" }, [ic, el("div", { cls: "exp-title" }, [
+          el("span", { cls: "exp-cat", text: (X.cats || {})[e.cat] || e.cat }),
+          el("h3", { cls: "card-title exp-name", text: tx.name || e.id })
+        ])]),
+        tx.intro ? el("p", { cls: "exp-text", text: tx.intro }) : null,
+        el("p", { cls: "exp-meta" }, [star, el("b", { text: Number(e.rating).toFixed(2), "aria-label": (X.rating || "") + " " + Number(e.rating).toFixed(2) }),
+          el("span", { text: "\u00B7" }), el("span", { text: fill(X.reviews || "{n}", { n: num(e.reviews) }) })]),
+        tx.note ? el("p", { cls: "exp-note" }, [el("b", { text: X.note || "" }), document.createTextNode(tx.note)]) : null,
+        e.url ? el("a", { cls: "btn outline exp-btn", href: e.url, target: "_blank", rel: "noopener", text: (X.button || "Airbnb") + " \u2197" }) : null
+      ]);
+    }
+    function draw() {
+      list.innerHTML = "";
+      var n = 0;
+      EXP.forEach(function (e, i) {
+        if (expFilter !== "all" && (EXP_CATS[e.cat] || {}).filter !== expFilter) return;
+        list.appendChild(card(e, i)); n++;
+      });
+      if (!n) list.appendChild(el("p", { cls: "exp-empty", text: "-" }));
+    }
+    draw();
+    out.push(chips, list);
+    if (arr(X.footer).length) out.push(el("div", { cls: "exp-foot", role: "note" }, arr(X.footer).map(function (l) { return el("p", { text: l }); })));
+    out.push(bottomBack());
+    return out;
+  }
+
   /* ---------- 검색 ---------- */
   var SEARCH_TEXT = {
     "ko": { ex: "예: 난방, 세탁, 짐 보관", btn: "검색", title: "무엇을 찾으세요?", ph: "예: 와이파이, 세탁, 짐 보관, 맛집", none: "찾는 내용이 없어요. 다른 말로 검색하거나 아래로 연락해 주세요.", ask: "연락하기", count: "{n}개 찾음", home: "첫 화면" },
@@ -5820,10 +6353,12 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
         nt: norm(title), nb: norm(body) });
     }
     /* 기본 화면 (체크인, 와이파이, 연락하기, Uber): 화면을 만들어 보고 카드마다 글을 모읍니다 */
-    ["checkin", "wifi", "uber", "contact"].forEach(function (id) {
+    ["checkin", "wifi", "uber", "contact", "experiences"].forEach(function (id) {
       var e = entry(id); if (!e) return;
-      var view = { checkin: viewCheckin, wifi: viewWifi, uber: viewUber, contact: viewContact }[id];
+      var view = { checkin: viewCheckin, wifi: viewWifi, uber: viewUber, contact: viewContact, experiences: viewExperiences }[id];
+      var keepF = expFilter; expFilter = "all";
       var box = el("div", null, view());
+      expFilter = keepF;
       var head = { body: [e.sub || ""] }, cards = [];
       Array.prototype.slice.call(box.querySelectorAll(".card")).forEach(function (c, k) {
         var h = c.querySelector(".card-title, summary span, .label");
@@ -5986,6 +6521,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     else if (id === "wifi") nodes = viewWifi();
     else if (id === "contact") nodes = viewContact();
     else if (id === "search") nodes = viewSearch();
+    else if (id === "experiences") { if (searchTarget && searchTarget.route === "experiences") expFilter = "all"; nodes = viewExperiences(); }
     else if (id === "uber" && BASE.showUber !== false) nodes = viewUber();
     else {
       var p = pageById(id);

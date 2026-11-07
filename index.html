@@ -4881,6 +4881,54 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
 }
 .chip.on { border-color: var(--accent); background: var(--accent); color: #FFFFFF; font-weight: 600; }
 .card.flash { box-shadow: 0 0 0 3px var(--accent); }
+/* 검색 */
+.tools { display: flex; align-items: center; gap: 8px; }
+.hero .tools { position: absolute; top: 14px; right: 14px; z-index: 5; }
+.hero .tools .lang-pick { position: relative; top: auto; right: auto; }
+.search-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0; flex: none;
+  border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 50%;
+  background: rgba(252, 252, 250, 0.92); color: var(--text);
+  box-shadow: var(--shadow); cursor: pointer;
+}
+.page-top .search-btn { border-color: var(--line); box-shadow: none; background: var(--bg); }
+.search-btn svg { width: 20px; height: 20px; }
+.search-title-h { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; margin: 12px 0 18px; }
+.search-box { position: relative; }
+.search-ic { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--faint); display: flex; pointer-events: none; }
+.search-ic svg { width: 20px; height: 20px; }
+.search-input {
+  width: 100%; min-height: 60px; padding: 0 18px 0 50px;
+  border: 2px solid var(--text); border-radius: 18px; background: var(--bg); color: var(--text);
+  font-size: 18px; font-family: inherit; -webkit-appearance: none; appearance: none;
+}
+.search-input:focus { outline: none; border-color: var(--accent); }
+.search-input::placeholder { color: var(--faint); }
+.search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.search-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+.search-chips .chip { min-height: 44px; }
+.search-results { margin-top: 12px; }
+.search-count { font-size: 14px; color: var(--sub); margin: 8px 4px 10px; }
+.search-item {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 100%;
+  text-align: left; padding: 14px 16px; margin-bottom: 10px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--card);
+  color: var(--text); font-family: inherit; cursor: pointer;
+}
+.search-item:active { background: var(--soft); }
+.search-page { font-size: 13px; font-weight: 600; color: var(--accent); }
+.search-title { font-size: 17px; font-weight: 700; line-height: 1.4; }
+.search-snip { font-size: 15px; color: var(--sub); line-height: 1.5; }
+.search-item mark { background: rgba(0, 0, 0, 0.08); background: color-mix(in srgb, var(--accent) 22%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
+.home-search {
+  position: relative; display: flex; align-items: center; width: 100%; min-height: 56px; margin: 0 0 16px; padding: 0 16px 0 50px;
+  border: 1px solid var(--line); border-radius: 16px; background: var(--bg); color: var(--faint);
+  font-size: 16px; font-family: inherit; text-align: left; cursor: pointer; box-shadow: var(--shadow);
+}
+.home-search span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-empty { padding: 20px 4px; color: var(--sub); }
+.search-empty p { margin: 0 0 14px; }
 .hide { display: none !important; }
 </style>
 </head>
@@ -5213,7 +5261,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     return [
       el("div", { cls: "page-top" }, [
         el("button", { cls: "back", type: "button", onclick: function () { go(""); }, text: "‹ " + (T("backToMenu") || "") }),
-        langPicker()
+        el("div", { cls: "tools" }, [searchButton(), langPicker()])
       ]),
       el("h2", { cls: "page-title", text: title }),
       desc ? el("p", { cls: "page-desc", text: desc }) : null
@@ -5320,7 +5368,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
       img.addEventListener("error", function () { photo.innerHTML = ""; photo.appendChild(el("div", { cls: "placeholder", text: C.photoPlaceholder || "" })); });
       photo.appendChild(img);
     } else photo.appendChild(el("div", { cls: "placeholder", text: C.photoPlaceholder || "" }));
-    var hero = el("div", { cls: "hero" }, [photo, langPicker()]);
+    var hero = el("div", { cls: "hero" }, [photo, el("div", { cls: "tools" }, [searchButton(), langPicker()])]);
 
     var facts = fill(T("factsFormat"), { guests: C.maxGuests, bedrooms: C.bedrooms, bathrooms: C.bathrooms });
     var heroText = el("div", { cls: "hero-text" }, [
@@ -5371,7 +5419,11 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     var saveLink = isStandalone() ? null : el("p", { cls: "install-link" }, [
       el("button", { type: "button", text: X("installLink"), onclick: startInstall })
     ]);
-    return [hero, heroText, today, installBanner()].concat(groups, [footer, saveLink]);
+    var homeSearch = el("button", { cls: "home-search", type: "button", onclick: function () { go("search"); } });
+    var hsi = el("span", { cls: "search-ic", "aria-hidden": "true" }); hsi.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>');
+    homeSearch.appendChild(hsi);
+    homeSearch.appendChild(el("span", { text: ST("ph") }));
+    return [hero, heroText, today, homeSearch, installBanner()].concat(groups, [footer, saveLink]);
   }
 
   /* ---------- 체크인 ---------- */
@@ -5684,6 +5736,197 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     return nav;
   }
 
+  /* ---------- 검색 ---------- */
+  var SEARCH_TEXT = {
+    "ko": { btn: "검색", title: "무엇을 찾으세요?", ph: "예: 와이파이, 세탁, 짐 보관, 맛집", none: "찾는 내용이 없어요. 다른 말로 검색하거나 아래로 연락해 주세요.", ask: "연락하기", count: "{n}개 찾음", home: "첫 화면" },
+    "en": { btn: "Search", title: "What are you looking for?", ph: "e.g. Wi-Fi, laundry, luggage, food", none: "Nothing found. Try another word, or contact us below.", ask: "Contact", count: "{n} found", home: "Home" },
+    "ja": { btn: "検索", title: "何をお探しですか？", ph: "例：Wi-Fi、洗濯、荷物、グルメ", none: "見つかりませんでした。別の言葉で検索するか、下からご連絡ください。", ask: "連絡する", count: "{n}件", home: "ホーム" },
+    "zh-CN": { btn: "搜索", title: "您在找什么？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "没有找到。请换个词搜索，或在下方联系我们。", ask: "联系我们", count: "找到{n}条", home: "首页" },
+    "zh-TW": { btn: "搜尋", title: "您在找什麼？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "沒有找到。請換個詞搜尋，或在下方聯絡我們。", ask: "聯絡我們", count: "找到{n}筆", home: "首頁" }
+  };
+  /* 빠른 검색 버튼: 결과가 있는 것만 보입니다. terms 가운데 하나라도 들어 있으면 찾습니다 */
+  var SEARCH_CHIPS = {
+    "ko": [["체크인", ["체크인"]], ["와이파이", ["와이파이", "wifi"]], ["주차", ["주차"]], ["짐 보관", ["짐 보관", "짐보관"]], ["세탁", ["세탁", "건조기"]], ["난방", ["난방", "보일러"]], ["에어컨", ["에어컨"]], ["쓰레기", ["쓰레기", "분리수거"]], ["체크아웃", ["체크아웃"]], ["맛집", ["맛집"]], ["카페", ["카페"]], ["공항", ["공항"]], ["긴급", ["긴급", "119"]]],
+    "en": [["Check-in", ["check-in", "checkin"]], ["Wi-Fi", ["wifi"]], ["Parking", ["parking"]], ["Luggage", ["luggage"]], ["Laundry", ["laundry", "washer", "dryer", "washing"]], ["Heating", ["heating", "boiler"]], ["Air conditioner", ["air conditioner", "aircon", "a/c"]], ["Trash", ["trash", "recycling", "garbage", "waste"]], ["Check-out", ["check-out", "checkout"]], ["Food", ["places to eat", "restaurant", "food"]], ["Cafe", ["cafe", "café", "coffee"]], ["Airport", ["airport"]], ["Emergency", ["emergency", "119"]]],
+    "ja": [["チェックイン", ["チェックイン"]], ["Wi-Fi", ["wifi", "ワイファイ"]], ["駐車", ["駐車"]], ["荷物", ["荷物"]], ["洗濯", ["洗濯", "乾燥機"]], ["暖房", ["暖房", "ボイラー", "床暖"]], ["エアコン", ["エアコン"]], ["ゴミ", ["ゴミ", "ごみ", "分別"]], ["チェックアウト", ["チェックアウト"]], ["グルメ", ["グルメ", "飲食店", "レストラン"]], ["カフェ", ["カフェ"]], ["空港", ["空港"]], ["緊急", ["緊急", "119"]]],
+    "zh-CN": [["入住", ["入住"]], ["Wi-Fi", ["wifi", "无线网"]], ["停车", ["停车"]], ["行李", ["行李"]], ["洗衣", ["洗衣", "烘干"]], ["暖气", ["暖气", "地暖", "锅炉"]], ["空调", ["空调"]], ["垃圾", ["垃圾", "分类"]], ["退房", ["退房"]], ["美食", ["美食", "餐厅"]], ["咖啡", ["咖啡"]], ["机场", ["机场"]], ["紧急", ["紧急", "119"]]],
+    "zh-TW": [["入住", ["入住"]], ["Wi-Fi", ["wifi", "無線網"]], ["停車", ["停車"]], ["行李", ["行李"]], ["洗衣", ["洗衣", "烘乾"]], ["暖氣", ["暖氣", "地暖", "鍋爐"]], ["冷氣", ["冷氣", "空調"]], ["垃圾", ["垃圾", "分類"]], ["退房", ["退房"]], ["美食", ["美食", "餐廳"]], ["咖啡", ["咖啡"]], ["機場", ["機場"]], ["緊急", ["緊急", "119"]]]
+  };
+  function ST(k) { var d = SEARCH_TEXT[LANG] || SEARCH_TEXT.en; return d[k]; }
+  function norm(s) { return String(s || "").toLowerCase().replace(/[\s\-·・_.,，、]+/g, ""); }
+  var searchIndex = null, searchIndexLang = "", searchQuery = "", searchTarget = null;
+
+  function buildSearchIndex() {
+    if (searchIndex && searchIndexLang === LANG) return searchIndex;
+    var list = [];
+    function textOf(n) {
+      var w = document.createTreeWalker(n, NodeFilter.SHOW_TEXT, null), parts = [], t;
+      while ((t = w.nextNode())) { if (t.parentNode && t.parentNode.tagName === "BUTTON") continue; parts.push(t.nodeValue); }
+      return parts.join(" ").replace(/\s+/g, " ").trim();
+    }
+    function push(route, pageTitle, title, body, sel) {
+      if (!title && !body) return;
+      list.push({ route: route, page: pageTitle, title: title || pageTitle, body: body || "", sel: sel,
+        nt: norm(title), nb: norm(body) });
+    }
+    /* 기본 화면 (체크인, 와이파이, 연락하기, Uber): 화면을 만들어 보고 카드마다 글을 모읍니다 */
+    ["checkin", "wifi", "uber", "contact"].forEach(function (id) {
+      var e = entry(id); if (!e) return;
+      var view = { checkin: viewCheckin, wifi: viewWifi, uber: viewUber, contact: viewContact }[id];
+      var box = el("div", null, view());
+      var head = { body: [e.sub || ""] }, cards = [];
+      Array.prototype.slice.call(box.querySelectorAll(".card")).forEach(function (c, k) {
+        var h = c.querySelector(".card-title, summary span, .label");
+        var title = h ? textOf(h) : e.title;
+        var body = textOf(c).replace(title, "").trim();
+        if (title === e.title) head.body.push(body);
+        else cards.push([title, body, k]);
+      });
+      push(id, e.title, e.title, head.body.join(" "), null);
+      cards.forEach(function (c) { push(id, e.title, c[0], c[1], { nth: c[2] }); });
+    });
+    /* 안내 페이지: 글 데이터에서 바로 모읍니다 */
+    arr(C.pages).forEach(function (p) {
+      var pt = p.menu || p.title || "";
+      push(p.id, pt, pt, [p.desc, p.intro].filter(Boolean).join(" "), null);
+      arr(p.sections).forEach(function (s, si) {
+        var parts = [s.group].concat(arr(s.text), arr(s.list), arr(s.steps),
+          arr(s.items).map(function (it) { return (it.title || "") + " " + (it.text || ""); }),
+          arr(s.table).map(function (r) { return arr(r).join(" "); }), [s.note]);
+        push(p.id, pt, s.title || pt, parts.filter(Boolean).join(" "), { i: si });
+      });
+    });
+    searchIndex = list; searchIndexLang = LANG;
+    return list;
+  }
+
+  function runSearch(q, terms) {
+    var idx = buildSearchIndex();
+    var words = terms ? terms.map(norm) : String(q || "").split(/\s+/).map(norm).filter(Boolean);
+    if (!words.length) return [];
+    var any = !!terms;
+    var out = [];
+    idx.forEach(function (r) {
+      var score = 0, ok = any ? false : true;
+      words.forEach(function (w) {
+        var inT = r.nt.indexOf(w) >= 0, inB = r.nb.indexOf(w) >= 0;
+        if (inT || inB) { if (any) ok = true; score += inT ? 3 : 1; }
+        else if (!any) ok = false;
+      });
+      if (ok) out.push({ r: r, s: score + (r.sel ? 0 : 0.5) });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 40).map(function (x) { return x.r; });
+  }
+
+  function snippet(r, words) {
+    var body = r.body;
+    if (!body) return "";
+    var low = body.toLowerCase(), at = -1;
+    words.forEach(function (w) { if (at < 0 && w) { var j = low.indexOf(w.toLowerCase()); if (j >= 0) at = j; } });
+    if (at < 0) return body.length > 70 ? body.slice(0, 70) + "…" : body;
+    var start = Math.max(0, at - 24);
+    var s = (start > 0 ? "…" : "") + body.slice(start, start + 80);
+    return body.length > start + 80 ? s + "…" : s;
+  }
+  function marked(text, words) {
+    var frag = document.createDocumentFragment();
+    var ws = words.filter(Boolean).map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); });
+    if (!ws.length) { frag.appendChild(document.createTextNode(text)); return frag; }
+    var re = new RegExp("(" + ws.join("|") + ")", "ig");
+    String(text).split(re).forEach(function (part, i) {
+      if (!part) return;
+      if (i % 2) frag.appendChild(el("mark", { text: part }));
+      else frag.appendChild(document.createTextNode(part));
+    });
+    return frag;
+  }
+
+  function openResult(r) {
+    searchTarget = r.sel ? { route: r.route, sel: r.sel } : null;
+    if ((location.hash || "").replace(/^#/, "") === r.route) { render(); window.scrollTo(0, 0); }
+    else go(r.route);
+  }
+  function revealTarget() {
+    var t = searchTarget; searchTarget = null;
+    if (!t) return;
+    var cards = Array.prototype.slice.call(app.querySelectorAll("main .card"));
+    var c = t.sel.i != null ? app.querySelector('main .card[data-i="' + t.sel.i + '"]') : cards[t.sel.nth];
+    if (!c) return;
+    if (c.tagName === "DETAILS") c.open = true;
+    c.classList.remove("hide");
+    var y = c.getBoundingClientRect().top + window.pageYOffset - 16;
+    window.scrollTo({ top: y, behavior: "smooth" });
+    c.classList.add("flash");
+    setTimeout(function () { c.classList.remove("flash"); }, 1800);
+  }
+
+  function searchButton() {
+    var b = el("button", { cls: "search-btn", type: "button", "aria-label": ST("btn"), onclick: function () { go("search"); } });
+    b.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>');
+    return b;
+  }
+
+  function viewSearch() {
+    var input = el("input", { cls: "search-input", type: "search", placeholder: ST("ph"), "aria-label": ST("title"), enterkeyhint: "search", autocomplete: "off" });
+    input.value = searchQuery;
+    var chipBox = el("div", { cls: "search-chips" });
+    var results = el("div", { cls: "search-results", "aria-live": "polite" });
+    var activeTerms = null;
+
+    function draw() {
+      var q = input.value.trim();
+      searchQuery = input.value;
+      results.innerHTML = "";
+      Array.prototype.slice.call(chipBox.children).forEach(function (b) { b.classList.toggle("on", b._label === q && !!activeTerms); });
+      if (!q) return;
+      var words = activeTerms || q.split(/\s+/);
+      var found = runSearch(q, activeTerms);
+      if (!found.length) {
+        results.appendChild(el("div", { cls: "search-empty" }, [
+          el("p", { text: ST("none") }),
+          el("button", { cls: "btn outline", type: "button", text: ST("ask"), onclick: function () { go("contact"); } })
+        ]));
+        return;
+      }
+      results.appendChild(el("p", { cls: "search-count", text: fill(ST("count"), { n: found.length }) }));
+      found.forEach(function (r) {
+        var b = el("button", { cls: "search-item", type: "button", onclick: function () { openResult(r); } });
+        b.appendChild(el("span", { cls: "search-page", text: r.page }));
+        var t = el("span", { cls: "search-title" }); t.appendChild(marked(r.title, words)); b.appendChild(t);
+        var sn = snippet(r, words);
+        if (sn) { var s = el("span", { cls: "search-snip" }); s.appendChild(marked(sn, words)); b.appendChild(s); }
+        results.appendChild(b);
+      });
+    }
+
+    arr(SEARCH_CHIPS[LANG] || SEARCH_CHIPS.en).forEach(function (c) {
+      if (!runSearch("", c[1]).length) return;
+      var b = el("button", { cls: "chip", type: "button", text: c[0], onclick: function () {
+        input.value = c[0]; activeTerms = c[1]; draw();
+      } });
+      b._label = c[0];
+      chipBox.appendChild(b);
+    });
+    input.addEventListener("input", function () { activeTerms = null; draw(); });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") input.blur(); });
+    /* 돌아왔을 때 빠른 버튼으로 찾던 것이면 다시 그 방식으로 */
+    arr(SEARCH_CHIPS[LANG]).forEach(function (c) { if (c[0] === searchQuery.trim()) activeTerms = c[1]; });
+
+    var form = el("div", { cls: "search-box" }, [input]);
+    var ic = el("span", { cls: "search-ic", "aria-hidden": "true" }); ic.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>');
+    form.insertBefore(ic, input);
+    setTimeout(function () { draw(); if (!searchQuery) input.focus(); }, 0);
+    return [
+      el("div", { cls: "page-top" }, [
+        el("button", { cls: "back", type: "button", onclick: function () { go(""); }, text: "‹ " + (ST("home") || "") }),
+        langPicker()
+      ]),
+      el("h2", { cls: "search-title-h", text: ST("title") }),
+      form, chipBox, results
+    ];
+  }
+
   /* ---------- 화면 바꾸기 ---------- */
   function render() {
     var id = decodeURIComponent((location.hash || "").replace(/^#/, ""));
@@ -5692,17 +5935,19 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     else if (id === "checkin") nodes = viewCheckin();
     else if (id === "wifi") nodes = viewWifi();
     else if (id === "contact") nodes = viewContact();
+    else if (id === "search") nodes = viewSearch();
     else if (id === "uber" && BASE.showUber !== false) nodes = viewUber();
     else {
       var p = pageById(id);
       if (p) nodes = viewPage(p);
       else { nodes = viewHome(); cur = ""; }
     }
-    document.title = id && cur ? ((entry(id) || {}).title || "") + " · " + (C.stayName || "") : (C.stayName || "");
+    document.title = id === "search" ? ST("btn") + " · " + (C.stayName || "") : id && cur ? ((entry(id) || {}).title || "") + " · " + (C.stayName || "") : (C.stayName || "");
     var main = el("main", { cls: "wrap" }, nodes);
     app.innerHTML = "";
     app.appendChild(main);
     app.appendChild(tabbar(cur));
+    if (searchTarget && searchTarget.route === id) setTimeout(revealTarget, 60);
   }
   /* 확인 화면: 첫 화면 맨 아래 숙소 이름을 5번 누르면 휴대폰 정보가 나옵니다 (문제 찾기용) */
   var BUILD = "2026-10-31b";

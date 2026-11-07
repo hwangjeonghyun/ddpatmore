@@ -1,6 +1,6 @@
 /* 인터넷이 없어도 안내가 열리도록 파일을 휴대폰에 저장해 두는 장치입니다.
    index.html 이나 사진을 바꾼 뒤에는 아래 VERSION 숫자를 하나 올려 주세요. */
-var VERSION = "atmoreddp-22";
+var VERSION = "atmoreddp-23";
 var FILES = [
   "./",
   "./index.html",

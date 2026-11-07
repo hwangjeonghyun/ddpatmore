@@ -4926,7 +4926,10 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
   border: 1px solid var(--line); border-radius: 16px; background: var(--bg); color: var(--faint);
   font-size: 16px; font-family: inherit; text-align: left; cursor: pointer; box-shadow: var(--shadow);
 }
-.home-search span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-search { border-radius: 28px; gap: 10px; }
+.home-search .search-ic { color: var(--text); }
+.home-search strong { flex: none; color: var(--text); font-size: 17px; font-weight: 700; }
+.home-search .hs-ex { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--faint); font-size: 15px; }
 .search-empty { padding: 20px 4px; color: var(--sub); }
 .search-empty p { margin: 0 0 14px; }
 .hide { display: none !important; }
@@ -5422,7 +5425,8 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     var homeSearch = el("button", { cls: "home-search", type: "button", onclick: function () { go("search"); } });
     var hsi = el("span", { cls: "search-ic", "aria-hidden": "true" }); hsi.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>');
     homeSearch.appendChild(hsi);
-    homeSearch.appendChild(el("span", { text: ST("ph") }));
+    homeSearch.appendChild(el("strong", { text: ST("title") }));
+    homeSearch.appendChild(el("span", { cls: "hs-ex", text: ST("ph") }));
     return [hero, heroText, today, homeSearch, installBanner()].concat(groups, [footer, saveLink]);
   }
 

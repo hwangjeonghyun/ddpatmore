@@ -5426,7 +5426,7 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
     var hsi = el("span", { cls: "search-ic", "aria-hidden": "true" }); hsi.innerHTML = svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>');
     homeSearch.appendChild(hsi);
     homeSearch.appendChild(el("strong", { text: ST("title") }));
-    homeSearch.appendChild(el("span", { cls: "hs-ex", text: ST("ph") }));
+    homeSearch.appendChild(el("span", { cls: "hs-ex", text: ST("ex") }));
     return [hero, heroText, today, homeSearch, installBanner()].concat(groups, [footer, saveLink]);
   }
 
@@ -5742,11 +5742,11 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
 
   /* ---------- 검색 ---------- */
   var SEARCH_TEXT = {
-    "ko": { btn: "검색", title: "무엇을 찾으세요?", ph: "예: 와이파이, 세탁, 짐 보관, 맛집", none: "찾는 내용이 없어요. 다른 말로 검색하거나 아래로 연락해 주세요.", ask: "연락하기", count: "{n}개 찾음", home: "첫 화면" },
-    "en": { btn: "Search", title: "What are you looking for?", ph: "e.g. Wi-Fi, laundry, luggage, food", none: "Nothing found. Try another word, or contact us below.", ask: "Contact", count: "{n} found", home: "Home" },
-    "ja": { btn: "検索", title: "何をお探しですか？", ph: "例：Wi-Fi、洗濯、荷物、グルメ", none: "見つかりませんでした。別の言葉で検索するか、下からご連絡ください。", ask: "連絡する", count: "{n}件", home: "ホーム" },
-    "zh-CN": { btn: "搜索", title: "您在找什么？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "没有找到。请换个词搜索，或在下方联系我们。", ask: "联系我们", count: "找到{n}条", home: "首页" },
-    "zh-TW": { btn: "搜尋", title: "您在找什麼？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "沒有找到。請換個詞搜尋，或在下方聯絡我們。", ask: "聯絡我們", count: "找到{n}筆", home: "首頁" }
+    "ko": { ex: "예: 난방, 세탁, 짐 보관", btn: "검색", title: "무엇을 찾으세요?", ph: "예: 와이파이, 세탁, 짐 보관, 맛집", none: "찾는 내용이 없어요. 다른 말로 검색하거나 아래로 연락해 주세요.", ask: "연락하기", count: "{n}개 찾음", home: "첫 화면" },
+    "en": { ex: "e.g. heating, laundry, luggage", btn: "Search", title: "What are you looking for?", ph: "e.g. Wi-Fi, laundry, luggage, food", none: "Nothing found. Try another word, or contact us below.", ask: "Contact", count: "{n} found", home: "Home" },
+    "ja": { ex: "例：暖房、洗濯、荷物", btn: "検索", title: "何をお探しですか？", ph: "例：Wi-Fi、洗濯、荷物、グルメ", none: "見つかりませんでした。別の言葉で検索するか、下からご連絡ください。", ask: "連絡する", count: "{n}件", home: "ホーム" },
+    "zh-CN": { ex: "例如：暖气、洗衣、行李", btn: "搜索", title: "您在找什么？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "没有找到。请换个词搜索，或在下方联系我们。", ask: "联系我们", count: "找到{n}条", home: "首页" },
+    "zh-TW": { ex: "例如：暖氣、洗衣、行李", btn: "搜尋", title: "您在找什麼？", ph: "例如：Wi-Fi、洗衣、行李、美食", none: "沒有找到。請換個詞搜尋，或在下方聯絡我們。", ask: "聯絡我們", count: "找到{n}筆", home: "首頁" }
   };
   /* 빠른 검색 버튼: 결과가 있는 것만 보입니다. terms 가운데 하나라도 들어 있으면 찾습니다 */
   var SEARCH_CHIPS = {

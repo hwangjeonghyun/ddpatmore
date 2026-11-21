@@ -39,6 +39,18 @@ const CONFIG = {
   photo: "img/main.jpg",             // 첫 화면 사진. img 폴더의 main.jpg 입니다 [지금은 임시 사진]
   photoAlt: "퀸 침대 두 개가 있는 침실", // 사진이 안 보일 때 대신 읽히는 설명
   photoPlaceholder: "사진 준비 중",    // 사진 파일이 없을 때 사진 자리에 나오는 글자
+  /* 첫 화면에서 옆으로 넘겨 보는 숙소 사진입니다. img 폴더 안 사진 이름을 한 줄씩 적어 주세요.
+     에어비앤비 숙소가 열리면 그 사진 주소로 바꿀 수 있습니다. 맨 위 사진이 처음에 보입니다. */
+  photos: [
+    "img/main.jpg",
+    "img/about/living.jpg",
+    "img/about/lattice-door.jpg",
+    "img/about/bedroom.jpg",
+    "img/about/window-desk.jpg",
+    "img/about/window-sofa.jpg",
+    "img/about/lattice-detail.jpg",
+    "img/about/lamp.jpg"
+  ],
 
   // ----- 체크인 -----
   address: "서울특별시 중구 쌍림동 210-2 FIVENUE 5층", // 화면에 보이고 [주소 복사]로 복사되는 주소
@@ -4596,6 +4608,35 @@ button { -webkit-tap-highlight-color: transparent; }
   display: flex; align-items: center; justify-content: center;
 }
 .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slides {
+  width: 100%; height: 100%; display: flex;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.slides::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 100%; height: 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+.slide-dots {
+  position: absolute; left: 0; right: 0; bottom: 84px; z-index: 3;
+  display: flex; justify-content: center; gap: 0; pointer-events: none;
+}
+.slide-dot {
+  width: 18px; height: 24px; padding: 0; border: none; background: none;
+  cursor: pointer; pointer-events: auto; position: relative;
+}
+.slide-dot::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6); box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+  transition: width 0.2s, margin 0.2s;
+}
+.slide-dot.on::after { width: 18px; margin-left: -9px; border-radius: 4px; background: #fff; }
+.slide-count {
+  position: absolute; left: 14px; top: 20px; z-index: 3;
+  padding: 4px 12px; border-radius: 14px;
+  background: rgba(0, 0, 0, 0.42); color: #fff;
+  font-size: 14px; font-weight: 600; pointer-events: none;
+}
 .photo .placeholder { color: var(--accent); font-size: 20px; font-weight: 600; padding: 16px; text-align: center; }
 .hero::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 45%;
@@ -5443,12 +5484,52 @@ details.card .sec { padding: 14px 16px 16px; border-top: 1px solid var(--line); 
 
   function viewHome() {
     var photo = el("div", { cls: "photo" });
-    if (C.photo) {
-      var img = el("img", { src: C.photo, alt: C.photoAlt || "" });
-      img.addEventListener("error", function () { photo.innerHTML = ""; photo.appendChild(el("div", { cls: "placeholder", text: C.photoPlaceholder || "" })); });
-      photo.appendChild(img);
-    } else photo.appendChild(el("div", { cls: "placeholder", text: C.photoPlaceholder || "" }));
     var hero = el("div", { cls: "hero" }, [photo, el("div", { cls: "tools" }, [searchButton(), langPicker()])]);
+    var photoList = (BASE.photos && BASE.photos.length) ? BASE.photos.slice() : (C.photo ? [C.photo] : []);
+    function showPlaceholder() { photo.innerHTML = ""; photo.appendChild(el("div", { cls: "placeholder", text: C.photoPlaceholder || "" })); }
+    if (!photoList.length) showPlaceholder();
+    else {
+      /* 손가락으로 옆으로 밀면 다음 사진으로 넘어갑니다 */
+      var track = el("div", { cls: "slides", "aria-roledescription": "carousel" });
+      photoList.forEach(function (src, i) {
+        var slide = el("div", { cls: "slide" });
+        var img = new Image();
+        img.alt = (C.photoAlt || "") + (photoList.length > 1 ? " " + (i + 1) + "/" + photoList.length : "");
+        img.loading = i === 0 ? "eager" : "lazy";
+        img.decoding = "async";
+        img.onerror = function () { if (slide.parentNode) slide.parentNode.removeChild(slide); slideUpdate(); };
+        img.src = src;
+        slide.appendChild(img);
+        track.appendChild(slide);
+      });
+      photo.appendChild(track);
+      var dots = el("div", { cls: "slide-dots" });
+      var count = el("div", { cls: "slide-count", "aria-live": "polite" });
+      hero.appendChild(dots);
+      hero.appendChild(count);
+      var slideNow = 0;
+      function slideUpdate() {
+        var n = track.children.length;
+        if (n <= 1) { dots.style.display = "none"; count.style.display = "none"; if (!n) showPlaceholder(); return; }
+        dots.style.display = ""; count.style.display = "";
+        var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        slideNow = Math.max(0, Math.min(n - 1, i));
+        if (dots.children.length !== n) {
+          dots.innerHTML = "";
+          for (var k = 0; k < n; k++) {
+            (function (k) {
+              dots.appendChild(el("button", { cls: "slide-dot", type: "button", "aria-label": (k + 1) + " / " + n,
+                onclick: function () { track.scrollTo({ left: k * track.clientWidth, behavior: "smooth" }); } }));
+            })(k);
+          }
+        }
+        for (var j = 0; j < dots.children.length; j++) dots.children[j].classList.toggle("on", j === slideNow);
+        count.textContent = (slideNow + 1) + " / " + n;
+      }
+      var slideTmr;
+      track.addEventListener("scroll", function () { clearTimeout(slideTmr); slideTmr = setTimeout(slideUpdate, 60); }, { passive: true });
+      setTimeout(slideUpdate, 0);
+    }
 
     var facts = fill(T("factsFormat"), { guests: C.maxGuests, bedrooms: C.bedrooms, bathrooms: C.bathrooms });
     var heroText = el("div", { cls: "hero-text" }, [
